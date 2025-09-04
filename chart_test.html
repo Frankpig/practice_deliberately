@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js 测试</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div style="width: 600px; height: 400px;">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取canvas元素
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // 创建图表
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['编程', '英语', '吉他'],
+                    datasets: [{
+                        label: '练习时间(小时)',
+                        data: [500, 1000, 200],
+                        backgroundColor: [
+                            'rgba(97, 218, 251, 0.5)',
+                            'rgba(33, 161, 241, 0.5)',
+                            'rgba(123, 31, 162, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(97, 218, 251, 1)',
+                            'rgba(33, 161, 241, 1)',
+                            'rgba(123, 31, 162, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            console.log('图表创建成功');
+        });
+    </script>
+</body>
+</html>
