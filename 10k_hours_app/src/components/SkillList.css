@@ -1,9 +1,10 @@
 .skill-list {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background-color: #f5f5f5;
+  background-color: var(--card-background-color);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
+  color: var(--text-color);
 }
 
 .skill-list.empty {
@@ -28,16 +29,16 @@
 }
 
 .skill-card {
-  background-color: white;
+  background-color: var(--card-background-color);
   border-radius: 8px;
   padding: 1.2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--card-shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .skill-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .skill-header {
@@ -49,7 +50,7 @@
 
 .skill-header h3 {
   margin: 0;
-  color: #282c34;
+  color: var(--text-color);
   font-size: 1.2rem;
 }
 
@@ -87,17 +88,41 @@
 
 .progress-bar {
   height: 10px;
-  background-color: #e0e0e0;
+  background-color: var(--progress-bar-background);
   border-radius: 5px;
   overflow: hidden;
   margin-bottom: 0.5rem;
-  background-image: linear-gradient(to right, #61dafb, #21a1f1);
+  background-image: var(--progress-bar-gradient);
   transition: width 0.5s ease;
 }
 
 .progress-text {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--secondary-text-color);
   display: block;
   text-align: right;
+}
+
+div.dark-mode .skill-stage:contains('新手') {
+  background-color: #5d4037;
+  color: #ffccbc;
+}
+
+div.dark-mode .skill-stage:contains('进阶者') {
+  background-color: #1a237e;
+  color: #bbdefb;
+}
+
+div.dark-mode .skill-stage:contains('熟练者') {
+  background-color: #1b5e20;
+  color: #c8e6c9;
+}
+
+div.dark-mode .skill-stage:contains('专家') {
+  background-color: #4a148c;
+  color: #e1bee7;
+}
+
+div.dark-mode .progress-bar {
+  background-image: linear-gradient(to right, #21a1f1, #61dafb);
 }
