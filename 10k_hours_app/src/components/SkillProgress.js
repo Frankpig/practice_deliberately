@@ -171,25 +171,41 @@ function SkillProgress() {
                   beginAtZero: true,
                   title: {
                     display: true,
-                    text: '百分比 (%)'
+                    text: '百分比 (%)',
+                    color: darkMode ? '#e0e0e0' : '#333'
                   },
                   ticks: {
                     callback: function(value) {
                       return value + '%';
-                    }
+                    },
+                    color: darkMode ? '#e0e0e0' : '#333'
+                  },
+                  grid: {
+                    color: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                   }
                 },
                 x: {
                   title: {
                     display: true,
-                    text: '技能'
+                    text: '技能',
+                    color: darkMode ? '#e0e0e0' : '#333'
+                  },
+                  ticks: {
+                    color: darkMode ? '#e0e0e0' : '#333'
+                  },
+                  grid: {
+                    color: darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                   }
                 }
               },
               plugins: {
                 title: {
                   display: true,
-                  text: '技能练习进度'
+                  text: '技能练习进度',
+                  color: darkMode ? '#e0e0e0' : '#333',
+                  font: {
+                    size: 16
+                  }
                 },
                 tooltip: {
                   callbacks: {
@@ -222,13 +238,13 @@ function SkillProgress() {
         console.log('Bar chart destroyed');
       }
     };
-  }, [memoizedSkills]);
+  }, [memoizedSkills, darkMode]);
 
   return (
     <div className="skill-progress-container" style={{ padding: '20px' }}>
-      <h2>技能练习进度</h2>
+      <h2 style={{ color: darkMode ? '#e0e0e0' : '#333' }}>技能练习进度</h2>
       {memoizedSkills.length === 0 ? (
-        <p>暂无技能数据，请先添加技能</p>
+        <p style={{ color: darkMode ? '#e0e0e0' : '#333' }}>暂无技能数据，请先添加技能</p>
       ) : (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
           <div style={{ width: '400px', height: '300px' }}>
