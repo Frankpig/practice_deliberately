@@ -1,0 +1,36 @@
+<!-- recordPractice.wxml -->
+<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx;">
+  <h2 style="color: var(--text-color);">记录练习时间</h2>
+  
+  <view style="height: 40rpx;"></view> <!-- 增加行间距 -->
+  
+  <view wx:if="{{skills.length === 0}}" class="empty" style="text-align: center; padding: 60rpx 20rpx; color: var(--secondary-text-color);">
+    <p>暂无技能，请先添加技能</p>
+  </view>
+  
+  <view wx:else style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
+    <view class="form-group">
+      <label for="skillSelect" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">选择技能</label>
+      <picker bindchange="onSkillSelect" value="{{selectedSkillIndex}}" range="{{skills}}" range-key="name" style="width: 100%; font-size: 32rpx;" picker-class="large-picker">
+        <view class="picker" style="padding: 15rpx 20rpx; height: 45rpx; border: 1rpx solid #ddd; border-radius: 8rpx; background-color: var(--card-background-color); color: var(--text-color); display: flex; align-items: center; font-size: 32rpx;">
+          {{selectedSkillName}}
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-group">
+      <label for="practiceHours" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">练习时间</label>
+      <picker mode="multiSelector" bindchange="onPracticeTimeChange" bindcolumnchange="onTimeColumnChange" value="{{timeValues}}" range="{{timeRanges}}" style="width: 100%; font-size: 32rpx;">
+        <view class="picker" style="padding: 15rpx 20rpx; height: 45rpx; border: 1rpx solid #ddd; border-radius: 8rpx; background-color: var(--card-background-color); color: var(--text-color); display: flex; align-items: center; font-size: 32rpx;">
+          {{selectedHours}}小时{{selectedMinutes}}分钟
+        </view>
+      </picker>
+    </view>
+    
+
+    
+    <button type="default" bindtap="handleSubmit" class="btn-primary" hover-class="button-hover" style="width: 100%; margin-top: 20rpx;">
+      记录
+    </button>
+  </view>
+</view>

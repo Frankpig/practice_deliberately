@@ -1,0 +1,180 @@
+/* app.wxss */
+
+/* 全局变量 */
+page {
+  --text-color: #333;
+  --secondary-text-color: #666;
+  --background-color: #f8f8f8;
+  --card-background-color: #ffffff;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --primary-color: #61dafb;
+  --progress-bar-background: #e0e0e0;
+  --progress-bar-gradient: linear-gradient(90deg, #61dafb, #4a90e2);
+  --border-color: #ddd;
+  --input-background-color: #ffffff;
+}
+
+/* 深色模式全局变量 */
+page.dark-mode,
+.container.dark-mode {
+  --text-color: #e0e0e0;
+  --secondary-text-color: #aaa;
+  --background-color: #1a1a1a;
+  --card-background-color: #2a2a2a;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --primary-color: #61dafb;
+  --progress-bar-background: #3a3a3a;
+  --progress-bar-gradient: linear-gradient(90deg, #61dafb, #4a90e2);
+  --border-color: #444;
+  --input-background-color: #333;
+}
+
+/* 基础样式 */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  padding: 20rpx;
+}
+
+/* 标题样式 */
+h1, h2, h3 {
+  color: var(--text-color);
+}
+
+h1 {
+  font-size: 44rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+
+h2 {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 30rpx 0;
+  padding-bottom: 10rpx;
+  border-bottom: 2rpx solid var(--primary-color);
+}
+
+h3 {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background-color: var(--card-background-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+/* 深色模式下的输入框焦点样式 */
+page.dark-mode .form-group input:focus,
+page.dark-mode .form-group select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8rpx rgba(97, 218, 251, 0.4);
+}
+
+/* 微信小程序全局picker组件样式 */
+/* 直接作用于picker组件 */
+picker {
+  font-size: 32rpx;
+}
+
+/* 选择器弹出层内容样式 - 更高优先级 */
+.wx-picker-content {
+  font-size: 40rpx !important;
+  font-weight: 500;
+}
+
+/* 选择器弹出层容器样式 */
+.picker-view {
+  font-size: 40rpx !important;
+}
+
+/* 选择器弹出层列样式 */
+.picker-view-column {
+  font-size: 40rpx !important;
+  line-height: 80rpx !important;
+}
+
+/* 特定选择器样式 */
+.large-picker {
+  font-size: 32rpx !important;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8rpx;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #4a90e2;
+}
+
+/* 深色模式按钮样式 */
+page.dark-mode .btn-primary {
+  background-color: var(--primary-color);
+  color: #2a2a2a;
+}
+
+page.dark-mode .btn-primary:hover {
+  background-color: #4a90e2;
+}
+
+/* 错误信息样式 */
+.error-message {
+  color: #ff4d4f;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 空状态样式 */
+.empty {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: var(--secondary-text-color);
+}
+
+/* 主题切换按钮 */
+.theme-toggle {
+  padding: 10rpx 20rpx;
+  font-size: 26rpx;
+  color: var(--text-color);
+  background-color: var(--card-background-color);
+  border: 1rpx solid #ddd;
+  border-radius: 20rpx;
+}
+
+/* 图标目录 */
+images/ {
+  /* 图标文件将放在此处 */
+}

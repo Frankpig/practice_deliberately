@@ -1,0 +1,39 @@
+<!-- addSkill.wxml -->
+<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx;">
+  <h2 style="color: var(--text-color); margin-bottom: 300rpx;">添加新技能</h2>
+  
+  <form bindsubmit="handleSubmit" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow); margin-top: 300rpx;">
+    <view class="form-group">
+      <label for="skillName" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">技能名称</label>
+      <input
+        id="skillName"
+        type="text"
+        value="{{skillName}}"
+        bindinput="onSkillNameInput"
+        placeholder="例如：编程、钢琴、绘画..."
+        placeholder-style="color: var(--secondary-text-color);"
+        class="form-input"
+      />
+    </view>
+    
+    <view class="form-group">
+      <label for="targetHours" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">目标小时数 (默认: 10000)</label>
+      <input
+        id="targetHours"
+        type="number"
+        value="{{targetHours}}"
+        bindinput="onTargetHoursInput"
+        min="1"
+        class="form-input"
+      />
+    </view>
+    
+    <view wx:if="{{error}}" class="error-message" style="color: #ff4d4f; font-size: 26rpx; margin-bottom: 20rpx;">
+      {{error}}
+    </view>
+    
+    <button type="primary" form-type="submit" class="btn-primary" hover-class="button-hover" style="width: 100%; margin-top: 20rpx;">
+      添加技能
+    </button>
+  </form>
+</view>

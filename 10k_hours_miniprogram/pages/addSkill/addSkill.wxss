@@ -1,0 +1,89 @@
+/* addSkill.wxss */
+
+/* 标题样式 */
+.container h2 {
+  margin-bottom: 120rpx !important;
+  color: var(--text-color);
+}
+
+/* 表单容器样式 */
+.container form {
+  background-color: var(--card-background-color);
+  padding: 30rpx;
+  border-radius: 15rpx;
+  box-shadow: var(--card-shadow);
+  margin-top: 120rpx;
+}
+
+/* 表单组样式 */
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+/* 标签样式 */
+.form-group label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  color: var(--text-color);
+}
+
+/* 输入框样式 */
+.form-input {
+  width: 100%;
+  padding: 24rpx 20rpx;
+  font-size: 28rpx;
+  border: 2rpx solid var(--border-color, #ddd);
+  border-radius: 12rpx;
+  background-color: var(--input-background-color, var(--card-background-color));
+  color: var(--text-color);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  line-height: 1.5;
+  height: auto;
+}
+
+/* 输入框焦点样式 */
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10rpx rgba(97, 218, 251, 0.3);
+  outline: none;
+}
+
+/* 深色模式下的输入框焦点样式 */
+page.dark-mode .form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10rpx rgba(97, 218, 251, 0.4);
+}
+
+/* 错误信息样式 */
+.error-message {
+  color: #ff4d4f;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8rpx;
+  margin-top: 20rpx;
+}
+
+/* 深色模式按钮样式 */
+page.dark-mode .btn-primary {
+  background-color: var(--primary-color);
+  color: #2a2a2a;
+}
+
+/* 按钮悬停效果 */
+.btn-primary:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}

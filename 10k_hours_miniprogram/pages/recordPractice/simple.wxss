@@ -1,0 +1,59 @@
+/* simple.wxss - 简化版的样式 */
+.container {
+  padding: 30rpx;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+h2 {
+  color: #333;
+  font-size: 36rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: #999;
+}
+
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.picker {
+  padding: 20rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background-color: #fff;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background-color: #fff;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.error-message {
+  color: #ff4d4f;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+}
+
+button {
+  width: 100%;
+  margin-top: 20rpx;
+}

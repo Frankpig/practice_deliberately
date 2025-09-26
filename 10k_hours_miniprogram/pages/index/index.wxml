@@ -1,0 +1,54 @@
+<!-- index.wxml -->
+<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh;">
+  <!-- 顶部标题和主题切换 -->
+  <view class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 20rpx 0; margin-bottom: 40rpx;">
+    <view class="title" style="font-size: 44rpx; font-weight: bold; color: var(--text-color);">
+      {{welcomeMessage}}
+    </view>
+    <button class="theme-toggle" bindtap="toggleDarkMode" hover-class="button-hover" style="color: var(--text-color);">
+      {{darkMode ? '浅色模式' : '深色模式'}}
+    </button>
+  <!-- 调试按钮 -->
+      <button bindtap="clearAllData" style="font-size: 24rpx; margin-top: 20rpx; color: #ff4d4f; background-color: transparent; padding: 0;">清除所有数据（调试用）</button>
+      <button bindtap="gotoTestPage" style="font-size: 24rpx; margin-top: 10rpx; color: #1890ff; background-color: transparent; padding: 0;">数据测试工具（调试用）</button>
+      <button bindtap="gotoNavTestPage" style="font-size: 24rpx; margin-top: 10rpx; color: #52c41a; background-color: transparent; padding: 0;">导航功能测试（调试用）</button>
+  </view>
+  
+  <!-- 介绍文本 -->
+  <view class="intro" style="text-align: center; margin-bottom: 60rpx; padding: 0 40rpx;">
+    <text style="font-size: 32rpx; color: var(--secondary-text-color); line-height: 1.6;">
+      {{introText}}
+    </text>
+  </view>
+  
+  <!-- 功能快捷入口 -->
+  <view class="quick-actions" style="display: flex; flex-direction: column; gap: 30rpx;">
+    <view class="action-button" bindtap="navigateToAddSkill" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
+      <view style="display: flex; justify-content: space-between; align-items: center;">
+        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">添加新技能</text>
+        <text style="font-size: 26rpx; color: var(--secondary-text-color);">开始你的练习之旅</text>
+      </view>
+    </view>
+    
+    <view class="action-button" bindtap="navigateToRecordPractice" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
+      <view style="display: flex; justify-content: space-between; align-items: center;">
+        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">记录练习时间</text>
+        <text style="font-size: 26rpx; color: var(--secondary-text-color);">跟踪你的努力</text>
+      </view>
+    </view>
+    
+    <view class="action-button" bindtap="navigateToSkillList" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
+      <view style="display: flex; justify-content: space-between; align-items: center;">
+        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">查看我的技能</text>
+        <text style="font-size: 26rpx; color: var(--secondary-text-color);">了解进度情况</text>
+      </view>
+    </view>
+    
+    <view class="action-button" bindtap="navigateToSkillProgress" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
+      <view style="display: flex; justify-content: space-between; align-items: center;">
+        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">进度统计</text>
+        <text style="font-size: 26rpx; color: var(--secondary-text-color);">可视化你的成长</text>
+      </view>
+    </view>
+  </view>
+</view>

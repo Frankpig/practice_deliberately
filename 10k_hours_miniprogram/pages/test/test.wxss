@@ -1,0 +1,15 @@
+/* test.wxss */
+.container {
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+p {
+  color: #666;
+  font-size: 28rpx;
+}

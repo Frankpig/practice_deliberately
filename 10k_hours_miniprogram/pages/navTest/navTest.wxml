@@ -1,0 +1,26 @@
+<view class="container" style="padding: 40rpx;">
+  <h2 style="text-align: center; margin-bottom: 40rpx;">导航功能测试</h2>
+  
+  <view style="display: flex; flex-direction: column; gap: 20rpx; margin-bottom: 40rpx;">
+    <text style="font-weight: bold; color: #333;">switchTab 导航测试:</text>
+    <button bindtap="testSwitchTabToIndex" type="primary">首页 (switchTab)</button>
+    <button bindtap="testSwitchTabToSkillList" type="primary">我的技能 (switchTab)</button>
+    <button bindtap="testSwitchTabToAddSkill" type="primary">添加技能 (switchTab)</button>
+    <button bindtap="testSwitchTabToSkillProgress" type="primary">进度统计 (switchTab)</button>
+  </view>
+  
+  <view style="display: flex; flex-direction: column; gap: 20rpx; margin-bottom: 40rpx;">
+    <text style="font-weight: bold; color: #333;">navigateTo 导航测试:</text>
+    <button bindtap="testNavigateToRecordPractice" type="default">记录练习 (navigateTo)</button>
+    <button bindtap="testNavigateToTest" type="default">测试页面 (navigateTo)</button>
+  </view>
+  
+  <view style="display: flex; flex-direction: column; gap: 20rpx;">
+    <text style="font-weight: bold; color: #333;">相对路径测试:</text>
+    <button bindtap="testRelativePath" type="default">相对路径导航</button>
+  </view>
+  
+  <view style="margin-top: 40rpx; padding: 20rpx; background-color: #f8f8f8; border-radius: 8rpx;">
+    <text style="font-size: 28rpx; color: #666;">注意：点击按钮后，查看控制台输出以了解导航结果。</text>
+  </view>
+</view>

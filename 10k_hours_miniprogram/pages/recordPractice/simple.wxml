@@ -1,0 +1,36 @@
+<!-- 简化版的记录练习页面 -->
+<view class="container">
+  <h2>记录练习时间</h2>
+  
+  <view wx:if="{{skills.length === 0}}" class="empty">
+    <p>暂无技能，请先添加技能</p>
+  </view>
+  
+  <form bindsubmit="handleSubmit" wx:else>
+    <view class="form-group">
+      <label>选择技能</label>
+      <picker bindchange="onSkillSelect" value="{{selectedSkillId}}" range="{{skills}}" range-key="name">
+        <view class="picker">
+          {{selectedSkillName || '请选择技能'}}
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-group">
+      <label>练习小时数</label>
+      <input
+        type="number"
+        value="{{practiceHours}}"
+        bindinput="onPracticeHoursInput"
+        min="0.1"
+        step="0.1"
+      />
+    </view>
+    
+    <view wx:if="{{error}}" class="error-message">
+      {{error}}
+    </view>
+    
+    <button type="submit">记录</button>
+  </form>
+</view>

@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/addSkill/addSkill",
+    "pages/recordPractice/recordPractice",
+    "pages/recordPractice/simple",
+    "pages/skillList/skillList",
+    "pages/skillProgress/skillProgress",
+    "pages/test/test",
+    "pages/navTest/navTest"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "刻意练习",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#61dafb",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/skillList/skillList",
+        "text": "我的技能"
+      },
+      {
+        "pagePath": "pages/addSkill/addSkill",
+        "text": "添加技能"
+      },
+      {
+        "pagePath": "pages/skillProgress/skillProgress",
+        "text": "进度统计"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

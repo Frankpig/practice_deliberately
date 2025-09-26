@@ -1,0 +1,118 @@
+/* recordPractice.wxss */
+
+/* 表单容器样式 */
+.container form {
+  background-color: var(--card-background-color);
+  padding: 30rpx;
+  border-radius: 15rpx;
+  box-shadow: var(--card-shadow);
+}
+
+/* 表单组样式 */
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+/* 标签样式 */
+.form-group label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  color: var(--text-color);
+}
+
+/* 选择器样式 */
+.picker {
+  padding: 20rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background-color: var(--card-background-color);
+  color: var(--text-color);
+  font-size: 50rpx;
+}
+
+/* 输入框样式 */
+.form-group input {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background-color: var(--card-background-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+/* 深色模式下的输入框和选择器焦点样式 */
+page.dark-mode .form-group input:focus,
+page.dark-mode .picker {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8rpx rgba(97, 218, 251, 0.4);
+}
+
+/* 错误信息样式 */
+.error-message {
+  color: #ff4d4f;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8rpx;
+  margin-top: 20rpx;
+}
+
+/* 深色模式按钮样式 */
+page.dark-mode .btn-primary {
+  background-color: var(--primary-color);
+  color: #2a2a2a;
+}
+
+/* 按钮悬停效果 */
+.btn-primary:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+/* 空状态样式 */
+.empty {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: var(--secondary-text-color);
+}
+
+/* 选择技能弹出框样式 - 针对picker组件的全局样式 */
+/* 尝试直接选择器 */
+.wx-picker-content {
+  font-size: 40rpx !important;
+}
+
+/* 微信小程序picker弹出层的特定样式类 */
+.picker-view {
+  font-size: 60rpx !important;
+}
+
+.picker-view-column {
+  font-size: 40rpx !important;
+}
+
+/* 特定picker的样式 */
+.large-picker {
+  font-size: 32rpx !important;
+}
+
+/* 优化样式，确保在不同设备上都能正常显示 */
+.picker {
+  padding: 15rpx 20rpx !important;
+  height: 45rpx !important;
+  font-size: 32rpx !important;
+  min-height: 45rpx !important;
+}

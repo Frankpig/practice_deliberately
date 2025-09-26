@@ -1,0 +1,84 @@
+/* skillList.wxss */
+
+/* 技能卡片容器 */
+.skill-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-top: 60rpx; /* 增加标题与技能卡片之间的间距 */
+}
+
+/* 技能卡片样式 */
+.skill-card {
+  background-color: var(--card-background-color);
+  padding: 30rpx;
+  border-radius: 15rpx;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+/* 深色模式下的卡片悬停效果 */
+page.dark-mode .skill-card:active {
+  box-shadow: 0 4px 12px rgba(97, 218, 251, 0.2);
+}
+
+/* 技能头部样式 */
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+/* 技能名称样式 */
+.skill-header h3 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+/* 技能阶段样式 */
+.skill-stage {
+  font-size: 24rpx;
+  font-weight: bold;
+  padding: 5rpx 15rpx;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 20rpx;
+}
+
+/* 进度条容器样式 */
+.progress-bar-container {
+  width: 100%;
+  height: 30rpx;
+  background-color: var(--progress-bar-background);
+  border-radius: 15rpx;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+}
+
+/* 进度条样式 */
+.progress-bar {
+  height: 100%;
+  background: var(--progress-bar-gradient);
+  transition: width 0.3s ease;
+}
+
+/* 深色模式下的进度条样式 */
+page.dark-mode .progress-bar {
+  background: linear-gradient(90deg, var(--primary-color), #4a90e2);
+}
+
+/* 进度文本样式 */
+.progress-text {
+  font-size: 24rpx;
+  color: var(--secondary-text-color);
+}
+
+/* 空状态样式 */
+.empty {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: var(--secondary-text-color);
+}
