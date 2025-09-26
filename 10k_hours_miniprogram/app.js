@@ -204,11 +204,11 @@ App({
     // 确保参数是有效的数字
     const hours = parseFloat(hoursPracticed) || 0;
     
-    if (hours < 500) return '新手阶段';
-    if (hours < 2000) return '进阶阶段';
-    if (hours < 5000) return '熟练阶段';
-    if (hours < 10000) return '专家阶段';
-    return '大师阶段';
+    if (hours < 500) return '新手';
+    if (hours < 2000) return '进阶';
+    if (hours < 5000) return '熟练';
+    if (hours < 10000) return '专家';
+    return '大师';
   },
   
   // 获取技能进度百分比，返回两位小数格式
