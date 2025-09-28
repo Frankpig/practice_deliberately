@@ -9,7 +9,7 @@
   
   <view wx:else class="skill-cards" style="display: flex; flex-direction: column; gap: 20rpx;">
     <block wx:for="{{skills}}" wx:key="id">
-      <view class="skill-card" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
+      <view class="skill-card" bindtap="onSkillTap" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow); cursor: pointer;">
         <view class="skill-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20rpx;">
           <h3 style="color: var(--text-color); margin: 0;">{{item.name}}</h3>
           <span class="skill-stage" style="font-size: 24rpx; font-weight: bold; padding: 5rpx 15rpx; background-color: transparent; color: var(--text-color);">{{item.stage}}</span>

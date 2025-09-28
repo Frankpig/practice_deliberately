@@ -15,7 +15,7 @@ Page({
     selectedMinutes: 0
   },
   
-  onLoad: function() {
+  onLoad: function(options) {
     // 获取全局应用实例
     const app = getApp();
     // 设置初始主题和技能数据
@@ -30,11 +30,27 @@ Page({
     // 根据主题设置页面样式
     this.updateTheme();
     
-    // 如果有技能数据，默认选择第一个技能
-    if (app.globalData.skills && app.globalData.skills.length > 0) {
+    // 检查是否有从URL参数传递过来的技能信息
+    if (options && options.skillId) {
+      // 从URL参数获取技能ID和名称
+      const skillId = options.skillId;
+      const skillName = options.skillName ? decodeURIComponent(options.skillName) : '';
+      
+      // 查找该技能在技能列表中的索引
+      const skillIndex = app.globalData.skills.findIndex(skill => skill.id === skillId);
+      
+      // 设置选中的技能
+      this.setData({
+        selectedSkillIndex: skillIndex >= 0 ? skillIndex : 0,
+        selectedSkillId: skillId,
+        selectedSkillName: skillName || '请选择技能'
+      });
+      
+      console.log('onLoad - 从URL参数选择技能:', { id: skillId, name: skillName, index: skillIndex });
+    } else if (app.globalData.skills && app.globalData.skills.length > 0) {
+      // 如果没有传递参数，默认选择第一个技能
       const firstSkill = app.globalData.skills[0];
       
-      // 修复：使用实际的技能ID而不是数组索引
       this.setData({
         selectedSkillIndex: 0,
         selectedSkillId: firstSkill ? firstSkill.id : '',
@@ -75,11 +91,10 @@ Page({
     });
     this.updateTheme();
     
-    // 如果有技能数据，默认选择第一个技能
-    if (app.globalData.skills && app.globalData.skills.length > 0) {
+    // 只有在还没有选择技能的情况下，才默认选择第一个技能
+    if (app.globalData.skills && app.globalData.skills.length > 0 && !this.data.selectedSkillId) {
       const firstSkill = app.globalData.skills[0];
       
-      // 修复：使用实际的技能ID而不是数组索引
       this.setData({
         selectedSkillIndex: 0,
         selectedSkillId: firstSkill ? firstSkill.id : '',
@@ -87,6 +102,14 @@ Page({
       });
       
       console.log('默认选择第一个技能:', { index: 0, id: firstSkill ? firstSkill.id : '未找到' });
+    } else if (this.data.selectedSkillId) {
+      // 如果已经有选择的技能，确保技能名称正确显示
+      const selectedSkill = app.globalData.skills.find(skill => skill.id === this.data.selectedSkillId);
+      if (selectedSkill) {
+        this.setData({
+          selectedSkillName: selectedSkill.name
+        });
+      }
     } else {
       // 如果没有技能数据，重置选择状态
       this.setData({

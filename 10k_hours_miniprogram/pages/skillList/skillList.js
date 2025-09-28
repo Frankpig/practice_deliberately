@@ -147,6 +147,17 @@ Page({
   
 
   
+  // 点击技能卡片跳转到记录练习时间页面
+  onSkillTap: function(e) {
+    // 从事件对象中获取技能ID和名称
+    const { skillId, skillName } = e.currentTarget.dataset;
+    
+    // 跳转到记录练习时间页面，并传递技能信息
+    wx.navigateTo({
+      url: `/pages/recordPractice/recordPractice?skillId=${skillId}&skillName=${encodeURIComponent(skillName)}`
+    });
+  },
+
   // 重置技能数据到示例数据
   onResetSkills: function() {
     try {
