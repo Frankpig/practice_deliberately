@@ -7,6 +7,9 @@
     "pages/skillList/skillList",
     "pages/skillProgress/skillProgress",
     "pages/test/test",
+    "pages/test/canvasTest",
+    "pages/test/canvasSimpleTest",
+    "pages/test/simpleCanvasTest",
     "pages/navTest/navTest"
   ],
   "window": {

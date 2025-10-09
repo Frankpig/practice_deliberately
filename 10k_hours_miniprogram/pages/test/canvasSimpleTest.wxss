@@ -1,0 +1,26 @@
+.container {
+  padding: 20rpx;
+}
+
+.page-title {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 120rpx;
+  display: block;
+}
+
+.canvas-container {
+  border: 2rpx solid var(--border-color);
+  border-radius: 10rpx;
+  margin-bottom: 40rpx;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-primary {
+  width: 45%;
+}

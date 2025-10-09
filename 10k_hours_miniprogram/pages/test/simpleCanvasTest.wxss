@@ -1,0 +1,31 @@
+.container {
+  padding: 20rpx;
+}
+
+.page-title {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 60rpx;
+  display: block;
+}
+
+.canvas-container {
+  border: 2rpx solid #ddd;
+  border-radius: 10rpx;
+  margin-bottom: 40rpx;
+  background-color: #fff;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40rpx;
+}
+
+.btn-primary {
+  width: 48%;
+  background-color: #61dafb;
+  color: #fff;
+  margin-bottom: 20rpx;
+}

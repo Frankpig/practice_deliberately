@@ -32,7 +32,7 @@
       {{error}}
     </view>
     
-    <button type="primary" form-type="submit" class="btn-primary" hover-class="button-hover" style="width: 100%; margin-top: 20rpx;">
+    <button type="default" form-type="submit" class="btn-primary" hover-class="button-hover" style="width: 100%; margin-top: 20rpx; background-color: var(--primary-color); color: white;">
       添加技能
     </button>
   </form>

@@ -164,6 +164,21 @@ page.dark-mode .btn-primary:hover {
   color: var(--secondary-text-color);
 }
 
+/* skillProgress页面样式 */
+.page-title {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 120rpx;
+  display: block;
+}
+
+.charts-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 100rpx;
+}
+
 /* 主题切换按钮 */
 .theme-toggle {
   padding: 10rpx 20rpx;

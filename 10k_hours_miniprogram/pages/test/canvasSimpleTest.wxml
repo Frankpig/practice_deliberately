@@ -1,0 +1,16 @@
+<view class="container">
+  <text class="page-title">Canvas简单测试</text>
+  
+  <view class="canvas-container">
+    <canvas 
+      id="testCanvas" 
+      canvas-id="testCanvas" 
+      style="width: 100%; height: 300px;">
+    </canvas>
+  </view>
+  
+  <view class="controls">
+    <button class="btn-primary" bindtap="drawTestChart">重新绘制</button>
+    <button class="btn-primary" bindtap="clearCanvas">清空画布</button>
+  </view>
+</view>

@@ -5,6 +5,30 @@ Page({
   data: {
     skills: [],
     darkMode: false,
+    // 默认的模拟技能数据，防止图表显示为空
+    defaultSkills: [
+      {
+        id: 1,
+        name: '编程',
+        hoursPracticed: 320.5,
+        targetHours: 10000,
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 2,
+        name: '吉他',
+        hoursPracticed: 650.25,
+        targetHours: 10000,
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 3,
+        name: '绘画',
+        hoursPracticed: 150.75,
+        targetHours: 10000,
+        createdAt: new Date().toISOString()
+      }
+    ],
     // 图表数据
     pieChartData: {
       labels: [],
@@ -17,6 +41,7 @@ Page({
   },
   
   onLoad: function() {
+    console.log('skillProgress页面加载');
     // 获取全局应用实例
     const app = getApp();
     // 设置初始主题和技能数据
@@ -33,6 +58,7 @@ Page({
   },
   
   onShow: function() {
+    console.log('skillProgress页面显示');
     // 每次显示页面时刷新技能数据、主题和图表
     const app = getApp();
     this.setData({
@@ -74,16 +100,21 @@ Page({
   
   // 准备图表数据
   prepareChartData: function() {
-    const { skills, darkMode } = this.data;
+    const { skills, darkMode, defaultSkills } = this.data;
     const app = getApp();
     
+    console.log('开始准备图表数据，技能数量:', skills.length);
+    
+    // 如果没有技能数据，使用默认模拟数据
+    let skillsToUse = skills;
     if (skills.length === 0) {
-      return;
+      console.log('使用默认技能数据，因为全局数据为空');
+      skillsToUse = defaultSkills;
     }
     
     // 准备饼图数据
-    const pieLabels = skills.map(skill => skill.name);
-    const pieData = skills.map(skill => skill.hoursPracticed);
+    const pieLabels = skillsToUse.map(skill => skill.name);
+    const pieData = skillsToUse.map(skill => skill.hoursPracticed);
     
     // 设置饼图颜色
     const pieColors = darkMode ? [
@@ -103,34 +134,78 @@ Page({
     ];
     
     // 准备柱状图数据
-    const barLabels = skills.map(skill => skill.name);
-    const barData = skills.map(skill => {
+    const barLabels = skillsToUse.map(skill => skill.name);
+    const barData = skillsToUse.map(skill => {
       if (skill.targetHours === 0) return 0;
       return Number(((skill.hoursPracticed / skill.targetHours) * 100).toFixed(2));
     });
     
+    const pieChartData = {
+      labels: pieLabels,
+      datasets: [{ data: pieData, backgroundColor: pieColors }]
+    };
+    
+    const barChartData = {
+      labels: barLabels,
+      datasets: [{ 
+        label: '已练习进度', 
+        data: barData, 
+        backgroundColor: darkMode ? 'rgba(97, 218, 251, 0.7)' : 'rgba(54, 162, 235, 0.7)'
+      }]
+    };
+    
+    console.log('饼图数据准备完成:', pieChartData);
+    console.log('柱状图数据准备完成:', barChartData);
+    
     this.setData({
-      pieChartData: {
-        labels: pieLabels,
-        datasets: [{ data: pieData, backgroundColor: pieColors }]
-      },
-      barChartData: {
-        labels: barLabels,
-        datasets: [{ 
-          label: '已练习进度', 
-          data: barData, 
-          backgroundColor: darkMode ? 'rgba(97, 218, 251, 0.7)' : 'rgba(54, 162, 235, 0.7)'
-        }]
-      }
+      pieChartData: pieChartData,
+      barChartData: barChartData
+    });
+    
+    // 渲染图表
+    wx.nextTick(() => {
+      this.renderCharts();
     });
   },
   
   // 渲染图表（在实际使用中，这里会初始化ec-canvas实例）
   renderCharts: function() {
-    // 渲染饼图
-    initPieChart('pieCanvas', this.data.pieChartData, this.data.darkMode);
+    console.log('开始渲染图表');
     
-    // 渲染柱状图
-    initBarChart('barCanvas', this.data.barChartData, this.data.darkMode);
+    // 检查数据是否有效
+    if (!this.data.pieChartData || !this.data.pieChartData.labels || this.data.pieChartData.labels.length === 0) {
+      console.error('饼图数据无效');
+    } else {
+      console.log('饼图数据有效，标签数量：', this.data.pieChartData.labels.length);
+      console.log('饼图标签：', this.data.pieChartData.labels);
+      console.log('饼图数据：', this.data.pieChartData.datasets[0].data);
+      // 渲染饼图
+      try {
+        initPieChart('pieCanvas', this.data.pieChartData, this.data.darkMode);
+        console.log('饼图渲染完成');
+      } catch (error) {
+        console.error('渲染饼图时出错:', error);
+      }
+    }
+    
+    if (!this.data.barChartData || !this.data.barChartData.labels || this.data.barChartData.labels.length === 0) {
+      console.error('柱状图数据无效');
+    } else {
+      console.log('柱状图数据有效，标签数量：', this.data.barChartData.labels.length);
+      console.log('柱状图标签列表：', this.data.barChartData.labels);
+      console.log('柱状图数据：', this.data.barChartData.datasets[0].data);
+      
+      // 渲染柱状图
+      // 使用nextTick确保DOM完全加载后再绘制
+      wx.nextTick(() => {
+        console.log('在nextTick中绘制柱状图');
+        try {
+          initBarChart('barCanvas', this.data.barChartData, this.data.darkMode);
+          console.log('柱状图渲染完成');
+        } catch (error) {
+          console.error('绘制柱状图时出错:', error);
+        }
+      });
+    }
   }
 });
