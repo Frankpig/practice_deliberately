@@ -172,6 +172,11 @@ Page({
   renderCharts: function() {
     console.log('开始渲染图表');
     
+    // 保存当前页面实例，供initPieChart使用
+    if (typeof this.pieChartRedraw === 'function') {
+      console.log('饼图重绘方法已存在');
+    }
+    
     // 检查数据是否有效
     if (!this.data.pieChartData || !this.data.pieChartData.labels || this.data.pieChartData.labels.length === 0) {
       console.error('饼图数据无效');
@@ -181,11 +186,12 @@ Page({
       console.log('饼图数据：', this.data.pieChartData.datasets[0].data);
       // 渲染饼图
       try {
-        initPieChart('pieCanvas', this.data.pieChartData, this.data.darkMode);
-        console.log('饼图渲染完成');
-      } catch (error) {
-        console.error('渲染饼图时出错:', error);
-      }
+          // 保存饼图重绘方法
+          this.pieChartRedraw = initPieChart('pieCanvas', this.data.pieChartData, this.data.darkMode, this);
+          console.log('饼图渲染完成');
+        } catch (error) {
+          console.error('渲染饼图时出错:', error);
+        }
     }
     
     if (!this.data.barChartData || !this.data.barChartData.labels || this.data.barChartData.labels.length === 0) {
@@ -207,5 +213,11 @@ Page({
         }
       });
     }
+  },
+  
+  // 处理饼图点击事件
+  onChartTap: function(e) {
+    console.log('饼图被点击', e);
+    // 确保chartUtils.js中的触摸事件处理逻辑能够捕获到点击位置
   }
 });

@@ -5,68 +5,136 @@
  * @param {string} canvasId - 画布ID
  * @param {Object} data - 图表数据
  * @param {boolean} darkMode - 是否为深色模式
+ * @param {Object} that - 页面this对象，用于绑定触摸事件
  */
-export const initPieChart = function(canvasId, data, darkMode) {
+export const initPieChart = function(canvasId, data, darkMode, that) {
+  // 确保数据有效
+  if (!data || !data.labels || !data.datasets || data.datasets.length === 0 || !data.datasets[0].data) {
+    console.error('饼图数据无效');
+    return;
+  }
+
   const ctx = wx.createCanvasContext(canvasId);
   const { labels, datasets } = data;
   const chartData = datasets[0].data;
   const colors = datasets[0].backgroundColor;
   
   // 获取实际的画布尺寸
-  const canvasWidth = 600; // 增加画布宽度以容纳图例
-  const canvasHeight = 350;
+  let canvasWidth = 300;
+  let canvasHeight = 300;
+  
+  // 尝试获取实际Canvas尺寸
+  try {
+    const systemInfo = wx.getSystemInfoSync();
+    const dpr = systemInfo.pixelRatio || 1;
+    
+    // 使用Promise获取Canvas尺寸
+    const getDimensions = () => {
+      return new Promise((resolve) => {
+        wx.createSelectorQuery().select(`#${canvasId}`).fields({
+          size: true
+        }).exec((res) => {
+          if (res && res[0]) {
+            resolve({
+              width: res[0].width,
+              height: res[0].height
+            });
+          } else {
+            resolve({ width: 300, height: 300 });
+          }
+        });
+      });
+    };
+    
+    getDimensions().then(dimensions => {
+      canvasWidth = dimensions.width;
+      canvasHeight = dimensions.height;
+      console.log('获取到的Canvas尺寸:', canvasWidth, canvasHeight);
+      
+      // 初始绘制
+      drawChart();
+    }).catch(error => {
+      console.error('获取Canvas尺寸失败:', error);
+      // 使用默认尺寸绘制
+      drawChart();
+    });
+  } catch (error) {
+    console.error('获取系统信息失败:', error);
+    // 使用默认尺寸绘制
+    drawChart();
+  }
   
   // 计算饼图中心和半径
-  const centerX = 180;
-  const centerY = canvasHeight / 2 - 50; // 上移50像素，比之前再多上移20像素
-  const radius = 100;
+  const centerX = canvasWidth / 2;
+  const centerY = canvasHeight / 2;
+  const radius = Math.min(canvasWidth, canvasHeight) / 3; // 适当缩小半径
   
-  // 清空画布
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  // 绘制饼图函数
+    function drawChart() {
+      console.log('开始绘制饼图');
+      
+      // 清空画布
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      
+      // 计算总数值
+      const total = chartData.reduce((sum, value) => sum + value, 0);
+      console.log('饼图数据总和:', total);
+      
+      // 确保饼图居中 - 调整中心坐标以确保饼图完全居中
+      const centerX = canvasWidth / 2;
+      const centerY = canvasHeight / 3; // 将饼图上移，为下方文本留出空间
+      const radius = Math.min(canvasWidth, canvasHeight) / 4; // 适当调整半径大小
+      
+      // 从顶部开始绘制饼图
+      let startAngle = -Math.PI / 2;
+      
+      chartData.forEach((value, index) => {
+        console.log(`绘制扇形 ${index}: 值=${value}`);
+        
+        const sliceAngle = (value / total) * 2 * Math.PI;
+        const endAngle = startAngle + sliceAngle;
+        
+        // 绘制扇形
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.setFillStyle(colors[index % colors.length]);
+        ctx.fill();
+        
+        // 添加边框
+        ctx.setStrokeStyle(darkMode ? '#333' : '#fff');
+        ctx.setLineWidth(1);
+        ctx.stroke();
+        
+        // 更新起始角度
+        startAngle = endAngle;
+      });
+      
+      // 将文本移到饼图外部下方
+      ctx.setFontSize(16);
+      ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
+      ctx.setTextAlign('center');
+      ctx.setTextBaseline('middle');
+      ctx.fillText('总练习时间', centerX, centerY + radius + 30);
+      ctx.fillText(total.toFixed(1) + ' 小时', centerX, centerY + radius + 55);
+      
+      // 绘制图例
+      drawLegend(ctx, labels, colors, darkMode, canvasWidth, canvasHeight);
+      
+      // 绘制完成
+      ctx.draw();
+      console.log('饼图绘制完成');
+    }
   
-  // 计算总数值
-  const total = chartData.reduce((sum, value) => sum + value, 0);
+  // 提供一个公共方法，允许从外部手动调用重绘
+  function redraw() {
+    console.log('手动重绘饼图');
+    drawChart();
+  }
   
-  // 绘制饼图
-  let startAngle = -Math.PI / 2;
-  chartData.forEach((value, index) => {
-    const sliceAngle = (value / total) * 2 * Math.PI;
-    
-    // 绘制扇形
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
-    ctx.lineTo(centerX, centerY);
-    ctx.setFillStyle(colors[index % colors.length]);
-    ctx.fill();
-    
-    // 绘制边框
-    ctx.setStrokeStyle(darkMode ? '#333' : '#fff');
-    ctx.setLineWidth(2);
-    ctx.stroke();
-    
-    // 更新起始角度
-    startAngle += sliceAngle;
-  });
-  
-  // 绘制中心空白区域
-  ctx.beginPath();
-  ctx.arc(centerX, centerY, 40, 0, 2 * Math.PI);
-  ctx.setFillStyle(darkMode ? '#2a2a2a' : '#fff');
-  ctx.fill();
-  
-  // 绘制中心文字
-  ctx.setFontSize(14);
-  ctx.setFillStyle(darkMode ? '#e0e0e0' : '#333');
-  ctx.setTextAlign('center');
-  ctx.setTextBaseline('middle');
-  ctx.fillText('总练习', centerX, centerY - 10);
-  ctx.fillText(total.toFixed(1) + '小时', centerX, centerY + 10);
-  
-  // 绘制图例，传入饼图参数使其显示在正下方
-  drawLegend(ctx, labels, colors, darkMode, centerX, centerY, radius);
-  
-  // 绘制完成
-  ctx.draw();
+  // 为了简化，直接返回重绘函数
+  return redraw;
 };
 
 /**
@@ -257,11 +325,13 @@ export const initBarChart = function(canvasId, data, darkMode) {
  * @param {Array} labels - 标签数组
  * @param {Array} colors - 颜色数组
  * @param {boolean} darkMode - 是否为深色模式
+ * @param {number} canvasWidth - 画布宽度
+ * @param {number} canvasHeight - 画布高度
  */
-function drawLegend(ctx, labels, colors, darkMode, centerX, centerY, radius) {
-  // 使用简化的固定位置显示图例，确保可见
-  const legendX = 30; // 固定X坐标，确保在画布左侧可见
-  const legendY = 220; // 固定Y坐标，确保在饼图下方可见
+function drawLegend(ctx, labels, colors, darkMode, canvasWidth, canvasHeight) {
+  // 图例位置和尺寸
+  const legendX = 10; // 左侧边距
+  const legendY = canvasHeight - 180; // 在画布底部留出空间
   const itemHeight = 25;
   
   // 只显示最多6个图例项，超过的显示为"更多..."
@@ -273,22 +343,27 @@ function drawLegend(ctx, labels, colors, darkMode, centerX, centerY, radius) {
     ctx.setFillStyle(colors[index % colors.length]);
     ctx.fillRect(legendX, legendY + index * itemHeight, 16, 16);
     
+    // 添加边框
+    ctx.setStrokeStyle(darkMode ? '#ffffff' : '#000000');
+    ctx.setLineWidth(1);
+    ctx.strokeRect(legendX, legendY + index * itemHeight, 16, 16);
+    
     // 绘制标签
-    ctx.setFontSize(14);
-    ctx.setFillStyle(darkMode ? '#ffffff' : '#000000'); // 使用更明显的对比色
+    ctx.setFontSize(12);
+    ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
     ctx.setTextAlign('left');
     ctx.setTextBaseline('middle');
     
     // 处理长文本，截断显示
-    const maxLabelLength = 8;
+    const maxLabelLength = 10;
     const displayLabel = label.length > maxLabelLength ? label.substring(0, maxLabelLength) + '...' : label;
     ctx.fillText(displayLabel, legendX + 24, legendY + index * itemHeight + 8);
   });
   
   // 如果标签数量超过6个，显示"更多..."
   if (labels.length > 6) {
-    ctx.setFontSize(14);
-    ctx.setFillStyle(darkMode ? '#ffffff' : '#000000'); // 使用更明显的对比色
+    ctx.setFontSize(12);
+    ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
     ctx.setTextAlign('left');
     ctx.setTextBaseline('middle');
     ctx.fillText(`+${labels.length - 6} 更多...`, legendX, legendY + displayLabels.length * itemHeight);
