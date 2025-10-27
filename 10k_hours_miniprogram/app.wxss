@@ -1,32 +1,38 @@
 /* app.wxss */
 
-/* 全局变量 */
+/* 全局变量 - 使用指定的五种颜色重新设计 */
 page {
-  --text-color: #333;
-  --secondary-text-color: #666;
-  --background-color: #f8f8f8;
+  --text-color: #344e41;
+  --secondary-text-color: #588157;
+  --background-color: #dad7cd;
   --card-background-color: #ffffff;
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --primary-color: #61dafb;
-  --progress-bar-background: #e0e0e0;
-  --progress-bar-gradient: linear-gradient(90deg, #61dafb, #4a90e2);
-  --border-color: #ddd;
+  --primary-color: #a3b18a;
+  --secondary-color: #588157;
+  --accent-color: #3a5a40;
+  --dark-accent-color: #344e41;
+  --progress-bar-background: #dad7cd;
+  --progress-bar-gradient: linear-gradient(90deg, #a3b18a, #588157);
+  --border-color: #a3b18a;
   --input-background-color: #ffffff;
 }
 
 /* 深色模式全局变量 */
 page.dark-mode,
 .container.dark-mode {
-  --text-color: #e0e0e0;
-  --secondary-text-color: #aaa;
-  --background-color: #1a1a1a;
-  --card-background-color: #2a2a2a;
+  --text-color: #dad7cd;
+  --secondary-text-color: #a3b18a;
+  --background-color: #344e41;
+  --card-background-color: #3a5a40;
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --primary-color: #61dafb;
-  --progress-bar-background: #3a3a3a;
-  --progress-bar-gradient: linear-gradient(90deg, #61dafb, #4a90e2);
-  --border-color: #444;
-  --input-background-color: #333;
+  --primary-color: #a3b18a;
+  --secondary-color: #588157;
+  --accent-color: #a3b18a;
+  --dark-accent-color: #dad7cd;
+  --progress-bar-background: #344e41;
+  --progress-bar-gradient: linear-gradient(90deg, #a3b18a, #588157);
+  --border-color: #588157;
+  --input-background-color: #3a5a40;
 }
 
 /* 基础样式 */
@@ -56,7 +62,13 @@ h2 {
   font-weight: bold;
   margin: 30rpx 0;
   padding-bottom: 10rpx;
-  border-bottom: 2rpx solid var(--primary-color);
+  border-bottom: 3rpx solid var(--secondary-color);
+  color: var(--dark-accent-color);
+}
+
+page.dark-mode h2 {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
 }
 
 h3 {
@@ -88,11 +100,18 @@ h3 {
   box-sizing: border-box;
 }
 
+/* 输入框焦点样式 */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 10rpx rgba(88, 129, 87, 0.3);
+}
+
 /* 深色模式下的输入框焦点样式 */
 page.dark-mode .form-group input:focus,
 page.dark-mode .form-group select:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 8rpx rgba(97, 218, 251, 0.4);
+  box-shadow: 0 0 10rpx rgba(163, 177, 138, 0.4);
 }
 
 /* 微信小程序全局picker组件样式 */
@@ -126,28 +145,33 @@ picker {
 /* 按钮样式 */
 .btn-primary {
   width: 100%;
-  padding: 20rpx;
-  font-size: 30rpx;
+  padding: 30rpx;
+  font-size: 32rpx;
   font-weight: bold;
-  color: white;
+  color: var(--dark-accent-color);
   background-color: var(--primary-color);
-  border: none;
-  border-radius: 8rpx;
+  border: 2rpx solid var(--secondary-color);
+  border-radius: 15rpx;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-  background-color: #4a90e2;
+.btn-primary:active {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  transform: scale(0.98);
 }
 
 /* 深色模式按钮样式 */
 page.dark-mode .btn-primary {
   background-color: var(--primary-color);
-  color: #2a2a2a;
+  color: var(--dark-accent-color);
+  border-color: var(--secondary-color);
 }
 
-page.dark-mode .btn-primary:hover {
-  background-color: #4a90e2;
+page.dark-mode .btn-primary:active {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
 }
 
 /* 错误信息样式 */
@@ -181,12 +205,18 @@ page.dark-mode .btn-primary:hover {
 
 /* 主题切换按钮 */
 .theme-toggle {
-  padding: 10rpx 20rpx;
-  font-size: 26rpx;
-  color: var(--text-color);
-  background-color: var(--card-background-color);
-  border: 1rpx solid #ddd;
-  border-radius: 20rpx;
+  padding: 15rpx 30rpx;
+  font-size: 28rpx;
+  color: var(--dark-accent-color);
+  background-color: var(--primary-color);
+  border: 2rpx solid var(--secondary-color);
+  border-radius: 30rpx;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:active {
+  background-color: var(--secondary-color);
+  color: #ffffff;
 }
 
 /* 图标目录 */

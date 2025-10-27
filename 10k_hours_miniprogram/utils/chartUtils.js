@@ -17,7 +17,9 @@ export const initPieChart = function(canvasId, data, darkMode, that) {
   const ctx = wx.createCanvasContext(canvasId);
   const { labels, datasets } = data;
   const chartData = datasets[0].data;
-  const colors = datasets[0].backgroundColor;
+  // 使用指定的五种颜色
+  const defaultColors = ['#dad7cd', '#a3b18a', '#588157', '#3a5a40', '#344e41'];
+  const colors = datasets[0].backgroundColor && datasets[0].backgroundColor.length > 0 ? datasets[0].backgroundColor : defaultColors;
   
   // 获取实际的画布尺寸
   let canvasWidth = 300;
@@ -113,7 +115,7 @@ export const initPieChart = function(canvasId, data, darkMode, that) {
       
       // 将文本移到饼图外部下方
       ctx.setFontSize(16);
-      ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
+      ctx.setFillStyle(darkMode ? '#dad7cd' : '#344e41');
       ctx.setTextAlign('center');
       ctx.setTextBaseline('middle');
       ctx.fillText('总练习时间', centerX, centerY + radius + 30);
@@ -193,7 +195,7 @@ export const initBarChart = function(canvasId, data, darkMode) {
   
   // 绘制坐标轴 - 增强可见性
   ctx.beginPath();
-  ctx.setStrokeStyle(darkMode ? '#ccc' : '#333'); // 更明显的颜色，增加对比度
+  ctx.setStrokeStyle(darkMode ? '#588157' : '#a3b18a'); // 更明显的颜色，增加对比度
   ctx.setLineWidth(3); // 增加线宽
   
   // Y轴（水平柱状图的分类轴）- 靠左对齐
@@ -243,7 +245,10 @@ export const initBarChart = function(canvasId, data, darkMode) {
   const legendX = (width - legendWidth) / 2; // 计算居中的X坐标
   
   ctx.beginPath();
-  ctx.setFillStyle(barColor);
+  // 使用指定的五种颜色之一
+  const defaultColors = ['#dad7cd', '#a3b18a', '#588157', '#3a5a40', '#344e41'];
+  const colors = datasets[0].backgroundColor && datasets[0].backgroundColor.length > 0 ? datasets[0].backgroundColor : defaultColors[2]; // 使用#588157作为柱状图颜色
+  ctx.setFillStyle(colors);
   ctx.fillRect(legendX, legendY - 8, 16, 16);
   
   ctx.setFontSize(12);

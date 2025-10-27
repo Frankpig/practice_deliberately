@@ -116,21 +116,13 @@ Page({
     const pieLabels = skillsToUse.map(skill => skill.name);
     const pieData = skillsToUse.map(skill => skill.hoursPracticed);
     
-    // 设置饼图颜色
-    const pieColors = darkMode ? [
-      'rgba(255, 99, 132, 0.7)',
-      'rgba(54, 162, 235, 0.7)',
-      'rgba(255, 206, 86, 0.7)',
-      'rgba(75, 192, 192, 0.7)',
-      'rgba(153, 102, 255, 0.7)',
-      'rgba(255, 159, 64, 0.7)'
-    ] : [
-      'rgba(255, 99, 132, 0.7)',
-      'rgba(54, 162, 235, 0.7)',
-      'rgba(255, 206, 86, 0.7)',
-      'rgba(75, 192, 192, 0.7)',
-      'rgba(153, 102, 255, 0.7)',
-      'rgba(255, 159, 64, 0.7)'
+    // 设置饼图颜色 - 使用指定的五种颜色
+    const pieColors = [
+      '#dad7cd',
+      '#a3b18a',
+      '#588157',
+      '#3a5a40',
+      '#344e41'
     ];
     
     // 准备柱状图数据
@@ -150,7 +142,7 @@ Page({
       datasets: [{ 
         label: '已练习进度', 
         data: barData, 
-        backgroundColor: darkMode ? 'rgba(97, 218, 251, 0.7)' : 'rgba(54, 162, 235, 0.7)'
+        backgroundColor: darkMode ? '#588157' : '#a3b18a'
       }]
     };
     

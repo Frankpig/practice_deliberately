@@ -133,52 +133,5 @@ Page({
     });
   },
   
-  // 清除所有数据（调试用）
-  clearAllData: function() {
-    wx.showModal({
-      title: '确认清除',
-      content: '此操作将清除所有数据并重置应用，是否继续？',
-      success: function(res) {
-        if (res.confirm) {
-          const app = getApp();
-          app.clearAllData();
-          
-          wx.showToast({
-            title: '数据已清除',
-            icon: 'success',
-            duration: 2000
-          });
-          
-          // 重新加载页面数据
-          this.onShow();
-        }
-      }.bind(this)
-    });
-  },
-  
-  // 跳转到数据测试页面
-  gotoTestPage: function() {
-    wx.navigateTo({
-      url: '/pages/test/test',
-      success: function() {
-        console.log('跳转到测试页面成功');
-      },
-      fail: function(err) {
-        console.error('跳转到测试页面失败:', err);
-      }
-    });
-  },
-  
-  // 跳转到导航测试页面
-  gotoNavTestPage: function() {
-    wx.navigateTo({
-      url: '/pages/navTest/navTest',
-      success: function() {
-        console.log('跳转到导航测试页面成功');
-      },
-      fail: function(err) {
-        console.error('跳转到导航测试页面失败:', err);
-      }
-    });
-  }
+
 });

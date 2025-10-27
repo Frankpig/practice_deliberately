@@ -8,10 +8,6 @@
     <button class="theme-toggle" bindtap="toggleDarkMode" hover-class="button-hover" style="color: var(--text-color);">
       {{darkMode ? '浅色模式' : '深色模式'}}
     </button>
-  <!-- 调试按钮 -->
-      <button bindtap="clearAllData" style="font-size: 24rpx; margin-top: 20rpx; color: #ff4d4f; background-color: transparent; padding: 0;">清除所有数据（调试用）</button>
-      <button bindtap="gotoTestPage" style="font-size: 24rpx; margin-top: 10rpx; color: #1890ff; background-color: transparent; padding: 0;">数据测试工具（调试用）</button>
-      <button bindtap="gotoNavTestPage" style="font-size: 24rpx; margin-top: 10rpx; color: #52c41a; background-color: transparent; padding: 0;">导航功能测试（调试用）</button>
   </view>
   
   <!-- 介绍文本 -->
