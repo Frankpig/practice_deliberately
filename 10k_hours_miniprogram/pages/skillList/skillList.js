@@ -158,13 +158,16 @@ Page({
     });
   },
 
-  // 重置技能数据到示例数据
-  onResetSkills: function() {
+  // 删除技能功能
+  onDeleteSkill: function(e) {
     try {
+      // 从事件对象中获取技能ID和名称
+      const { skillId, skillName } = e.currentTarget.dataset;
+      
       // 弹出确认对话框
       wx.showModal({
-        title: '确认重置',
-        content: '确定要重置所有技能数据吗？这将恢复为示例数据，当前数据将丢失。',
+        title: '确认删除',
+        content: `确定要删除"${skillName}"技能吗？删除后相关的练习记录也将被清除。`,
         success: (res) => {
           if (res.confirm) {
             // 确保app实例可用
@@ -172,40 +175,32 @@ Page({
               this.app = getApp();
             }
             
-            // 清除本地存储中的技能数据
-            wx.removeStorageSync('skills');
+            // 从全局数据中删除技能
+            const updatedSkills = this.app.globalData.skills.filter(skill => skill.id !== skillId);
+            this.app.globalData.skills = updatedSkills;
             
-            // 添加示例技能数据
-            this.app.globalData.skills = [];
-            this.app.addSkill('编程', 10000);
-            this.app.addSkill('吉他', 10000);
-            this.app.addSkill('绘画', 10000);
-            
-            // 为重置后的技能数据预先计算百分比和阶段
-            const skillsWithPercentage = this.app.globalData.skills.map(skill => {
-              const hours = parseFloat(skill.hoursPracticed) || 0;
-              const target = parseFloat(skill.targetHours) || 10000;
-              // 确保百分比不超过100%，并格式化为两位小数
-              const percentage = Math.min((hours / target) * 100, 100).toFixed(2);
-              
-              // 预先计算技能阶段
-              const stage = this.app.getSkillStage(hours);
-              
-              return {
-                ...skill,
-                progressPercentage: percentage, // 预先计算好的百分比
-                stage: stage // 预先计算好的技能阶段
-              };
-            });
+            // 更新本地存储
+            wx.setStorageSync('skills', updatedSkills);
             
             // 更新页面数据
             this.setData({
-              skills: skillsWithPercentage
+              skills: updatedSkills.map(skill => {
+                const hours = parseFloat(skill.hoursPracticed) || 0;
+                const target = parseFloat(skill.targetHours) || 10000;
+                const percentage = Math.min((hours / target) * 100, 100).toFixed(2);
+                const stage = this.app.getSkillStage(hours);
+                
+                return {
+                  ...skill,
+                  progressPercentage: percentage,
+                  stage: stage
+                };
+              })
             });
             
             // 显示成功提示
             wx.showToast({
-              title: '技能数据已重置',
+              title: '技能已删除',
               icon: 'success'
             });
           }
@@ -213,9 +208,10 @@ Page({
       });
     } catch (error) {
       wx.showToast({
-        title: '重置失败',
+        title: '删除失败',
         icon: 'none'
       });
     }
   }
+
 });
