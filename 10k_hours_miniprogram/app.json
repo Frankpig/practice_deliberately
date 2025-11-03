@@ -10,7 +10,8 @@
     "pages/test/canvasTest",
     "pages/test/canvasSimpleTest",
     "pages/test/simpleCanvasTest",
-    "pages/navTest/navTest"
+    "pages/navTest/navTest",
+    "pages/testTheme/testTheme"
   ],
   "window": {
     "backgroundTextStyle": "light",

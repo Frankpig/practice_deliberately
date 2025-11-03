@@ -15,6 +15,7 @@ page {
   --progress-bar-gradient: linear-gradient(90deg, #a3b18a, #588157);
   --border-color: #a3b18a;
   --input-background-color: #ffffff;
+  --error-color: #FF4D4F;
 }
 
 /* 深色模式全局变量 */
@@ -33,6 +34,7 @@ page.dark-mode,
   --progress-bar-gradient: linear-gradient(90deg, #a3b18a, #588157);
   --border-color: #588157;
   --input-background-color: #3a5a40;
+  --error-color: #FF6B6B;
 }
 
 /* 基础样式 */

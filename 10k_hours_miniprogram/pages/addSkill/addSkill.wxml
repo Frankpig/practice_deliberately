@@ -1,39 +1,70 @@
 <!-- addSkill.wxml -->
 <view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx;">
-  <h2 style="color: var(--text-color); margin-bottom: 300rpx;">添加新技能</h2>
-  
-  <form bindsubmit="handleSubmit" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow); margin-top: 300rpx;">
-    <view class="form-group">
-      <label for="skillName" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">技能名称</label>
-      <input
-        id="skillName"
-        type="text"
-        value="{{skillName}}"
-        bindinput="onSkillNameInput"
-        placeholder="例如：编程、钢琴、绘画..."
-        placeholder-style="color: var(--secondary-text-color);"
-        class="form-input"
-      />
-    </view>
-    
-    <view class="form-group">
-      <label for="targetHours" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">目标小时数 (默认: 10000)</label>
-      <input
-        id="targetHours"
-        type="number"
-        value="{{targetHours}}"
-        bindinput="onTargetHoursInput"
-        min="1"
-        class="form-input"
-      />
-    </view>
-    
-    <view wx:if="{{error}}" class="error-message" style="color: #ff4d4f; font-size: 26rpx; margin-bottom: 20rpx;">
-      {{error}}
-    </view>
-    
-    <button type="default" form-type="submit" class="btn-primary" hover-class="button-hover" style="width: 100%; margin-top: 20rpx; background-color: var(--primary-color); color: white;">
-      添加技能
-    </button>
-  </form>
+  <!-- 头部区域 -->
+  <view class="header">
+    <h2 class="page-title" style="color: var(--text-color);">添加新技能</h2>
+    <p class="page-subtitle" style="color: var(--secondary-text-color);">记录你的学习目标，开始10000小时练习之旅</p>
+  </view>
+
+  <!-- 技能添加卡片 -->
+  <view class="skill-card" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow); margin: 30rpx 0;">
+    <!-- 表单区域 -->
+    <form class="skill-form" bindsubmit="handleSubmit">
+      <!-- 技能名称输入 -->
+      <view class="form-group">
+        <div class="input-wrapper">
+          <label for="skillName" class="input-label" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">技能名称</label>
+          <input 
+            id="skillName" 
+            class="form-input"
+            style="background-color: var(--input-background-color); color: var(--text-color);"
+            type="text" 
+            placeholder="例如：编程、绘画、钢琴..." 
+            placeholder-style="color: var(--secondary-text-color);"
+            value="{{skillName}}" 
+            bindinput="onSkillNameInput"
+            confirm-type="next"
+          />
+        </div>
+      </view>
+      
+      <!-- 目标小时数输入 -->
+      <view class="form-group">
+        <div class="input-wrapper">
+          <label for="targetHours" class="input-label" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">目标小时数</label>
+          <input 
+            id="targetHours" 
+            class="form-input"
+            style="background-color: var(--input-background-color); color: var(--text-color);"
+            type="number" 
+            placeholder="默认为10000小时" 
+            placeholder-style="color: var(--secondary-text-color);"
+            value="{{targetHours}}" 
+            bindinput="onTargetHoursInput"
+            min="1"
+            max="99999"
+          />
+          <div class="input-hint" style="color: var(--secondary-text-color); font-size: 24rpx; margin-top: 5rpx;">推荐设置为10000小时（专家水平）</div>
+        </div>
+      </view>
+      
+      <!-- 错误提示 -->
+      <view class="error-message" wx:if="{{error}}" style="color: #ff4d4f; font-size: 26rpx; margin: 20rpx 0; display: flex; align-items: center;">
+        <text class="error-icon">!</text>
+        <text class="error-text">{{error}}</text>
+      </view>
+      
+      <!-- 添加按钮 -->
+      <button class="add-button" type="primary" form-type="submit" style="background-color: var(--primary-color); color: white; margin-top: 20rpx;" hover-class="button-hover">
+        <text class="button-icon">+</text>
+        <text>添加技能</text>
+      </button>
+    </form>
+  </view>
+
+  <!-- 提示卡片 -->
+  <view class="tips-card" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow); margin-top: 30rpx;">
+    <h3 class="tips-title" style="color: var(--text-color); margin-bottom: 15rpx;">💡 小贴士</h3>
+    <p class="tips-content" style="color: var(--secondary-text-color); font-size: 26rpx; line-height: 1.5;">研究表明，要精通一项技能通常需要约10000小时的刻意练习。设定合理目标，坚持每日练习，稳步提升！</p>
+  </view>
 </view>

@@ -1,0 +1,25 @@
+<!-- 主题测试页面 -->
+<view class="page-container" style="background-color: {{darkMode ? '#344e41' : '#dad7cd'}}; min-height: 100vh; padding: 40rpx; transition: background-color 0.3s ease;">
+  <view class="header">
+    <h1 class="title" style="color: {{darkMode ? '#dad7cd' : '#344e41'}};">主题测试</h1>
+    <view class="subtitle" style="color: {{darkMode ? '#a3b18a' : '#588157'}};">点击按钮切换深色模式</view>
+  </view>
+  
+  <view class="content">
+    <button class="theme-toggle-btn" bindtap="toggleTheme" style="background-color: {{darkMode ? '#a3b18a' : '#3a5a40'}}; color: {{darkMode ? '#344e41' : '#ffffff'}}; margin: 40rpx 0;">切换到{{darkMode ? '浅色' : '深色'}}模式</button>
+    
+    <view class="current-mode" style="color: {{darkMode ? '#dad7cd' : '#344e41'}}; text-align: center; margin-bottom: 40rpx;">
+      当前模式: {{darkMode ? '深色模式' : '浅色模式'}}
+    </view>
+    
+    <view class="test-card" style="background-color: {{darkMode ? '#3a5a40' : '#ffffff'}}; border: 1px solid {{darkMode ? '#588157' : '#a3b18a'}}; border-radius: 24rpx; padding: 40rpx; margin-bottom: 30rpx;">
+      <view style="color: {{darkMode ? '#dad7cd' : '#344e41'}}; font-size: 32rpx; margin-bottom: 20rpx;">卡片标题</view>
+      <view style="color: {{darkMode ? '#a3b18a' : '#588157'}}; font-size: 28rpx;">这是测试文本，在不同主题下应该清晰可见。</view>
+    </view>
+    
+    <view class="nav-buttons">
+      <button class="nav-btn" bindtap="goToSkillList" style="background-color: {{darkMode ? '#3a5a40' : '#ffffff'}}; color: {{darkMode ? '#a3b18a' : '#3a5a40'}}; border: 1px solid {{darkMode ? '#588157' : '#a3b18a'}}; margin: 20rpx 0;">前往技能列表</button>
+      <button class="nav-btn" bindtap="goToAddSkill" style="background-color: {{darkMode ? '#3a5a40' : '#ffffff'}}; color: {{darkMode ? '#a3b18a' : '#3a5a40'}}; border: 1px solid {{darkMode ? '#588157' : '#a3b18a'}}; margin: 20rpx 0;">前往添加技能</button>
+    </view>
+  </view>
+</view>

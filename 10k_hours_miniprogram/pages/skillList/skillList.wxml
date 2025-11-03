@@ -1,34 +1,61 @@
-<!-- skillList.wxml -->
-<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx;">
-  <h2 style="color: var(--text-color);">我的技能</h2>
-  
-  <view wx:if="{{skills.length === 0}}" class="empty" style="text-align: center; padding: 60rpx 20rpx; color: var(--secondary-text-color);">
-    <p>暂无技能，请添加新技能开始练习记录</p>
+<!-- 技能列表页面 - 重制版 -->
+<view class="page-container" style="background-color: {{darkMode ? '#344e41' : '#dad7cd'}}; transition: background-color 0.3s ease;">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <h1 class="page-title" style="color: {{darkMode ? '#dad7cd' : '#344e41'}};">我的技能</h1>
+    <view class="skill-count" style="background-color: {{darkMode ? '#3a5a40' : '#ffffff'}}; color: {{darkMode ? '#a3b18a' : '#588157'}};">{{skills.length}} 项</view>
   </view>
   
-  <view wx:else class="skill-cards" style="display: flex; flex-direction: column; gap: 20rpx;">
+  <!-- 空状态 -->
+  <view wx:if="{{skills.length === 0}}" class="empty-state">
+    <view class="empty-icon">🎯</view>
+    <h3 class="empty-title" style="color: {{darkMode ? '#dad7cd' : '#344e41'}};">暂无技能</h3>
+    <p class="empty-description" style="color: {{darkMode ? '#a3b18a' : '#588157'}};">点击底部的「+」按钮添加新技能，开始你的练习之旅</p>
+  </view>
+  
+  <!-- 技能列表 -->
+  <view wx:else class="skill-list">
     <block wx:for="{{skills}}" wx:key="id">
-      <view class="skill-card" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
-        <view class="skill-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20rpx;">
-          <h3 bindtap="onSkillTap" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="color: var(--text-color); margin: 0; cursor: pointer;">{{item.name}}</h3>
-          <view style="display: flex; gap: 10rpx; align-items: center;">
-            <span class="skill-stage" style="font-size: 24rpx; font-weight: bold; padding: 5rpx 15rpx; background-color: transparent; color: var(--text-color);">{{item.stage}}</span>
-            <view bindtap="onDeleteSkill" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="width: 40rpx; height: 40rpx; background-color: white; color: #FF4D4F; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32rpx; font-weight: bold; cursor: pointer; border: 1px solid #FF4D4F;">-</view>
+      <view class="skill-card" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="background-color: {{darkMode ? '#3a5a40' : '#ffffff'}}; border-color: {{darkMode ? '#588157' : '#a3b18a'}}; color: {{darkMode ? '#dad7cd' : '#344e41'}};">
+        <!-- 技能卡片头部 -->
+        <view class="skill-header">
+          <h3 class="skill-name" bindtap="onSkillTap" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="color: {{darkMode ? '#dad7cd' : '#344e41'}};">{{item.name}}</h3>
+          <view class="skill-actions">
+            <view class="skill-stage" style="background-color: {{darkMode ? '#a3b18a' : '#3a5a40'}}; color: {{darkMode ? '#344e41' : '#ffffff'}};">{{item.stage}}</view>
+            <view class="delete-btn" bindtap="onDeleteSkill" data-skill-id="{{item.id}}" data-skill-name="{{item.name}}" style="background-color: {{darkMode ? '#3a5a40' : '#ffffff'}}; border-color: {{darkMode ? '#588157' : '#a3b18a'}};">
+              <text class="delete-icon" style="color: {{darkMode ? '#a3b18a' : '#588157'}};">×</text>
+            </view>
           </view>
         </view>
-        <view class="skill-progress" style="width: 100%;">
-          <view class="progress-bar-container" style="width: 100%; height: 30rpx; background-color: var(--progress-bar-background); border-radius: 15rpx; overflow: hidden; margin-bottom: 10rpx;">
-            <view class="progress-bar" style="height: 100%; width: {{item.progressPercentage}}%; background: var(--progress-bar-gradient); transition: width 0.3s ease;"></view>
+        
+        <!-- 进度信息 -->
+        <view class="progress-section">
+          <!-- 进度条 -->
+          <view class="progress-wrapper">
+            <view class="progress-bar-container" style="background-color: {{darkMode ? '#344e41' : '#dad7cd'}}; border-color: {{darkMode ? '#588157' : '#a3b18a'}};">
+              <view class="progress-bar" style="width: {{item.progressPercentage}}%; background: linear-gradient(90deg, #a3b18a, #588157);">
+                <view class="progress-glow"></view>
+              </view>
+            </view>
+            <view class="progress-percentage" style="color: {{darkMode ? '#a3b18a' : '#3a5a40'}};">{{item.progressPercentage}}%</view>
           </view>
-          <text class="progress-text" style="font-size: 24rpx; color: var(--secondary-text-color);">
-            <!-- 直接显示预计算的百分比值 -->
-            {{item.hoursPracticed}} / {{item.targetHours}} 小时
-            
-            <!-- 使用预计算的百分比 -->
-            <text style="font-weight: bold; color: var(--primary-color);"> 进度: {{item.progressPercentage}}%</text>
-          </text>
+          
+          <!-- 小时数信息 -->
+          <view class="hours-info">
+            <text class="current-hours" style="color: {{darkMode ? '#a3b18a' : '#3a5a40'}};">{{item.hoursPracticed}} 小时</text>
+            <text class="separator" style="color: {{darkMode ? '#588157' : '#588157'}};">/</text>
+            <text class="target-hours" style="color: {{darkMode ? '#588157' : '#588157'}};">{{item.targetHours}} 小时目标</text>
+          </view>
+        </view>
+        
+        <!-- 预计完成时间 -->
+        <view class="estimated-time" style="border-top-color: {{darkMode ? '#588157' : '#a3b18a'}};">
+          <text class="time-label" style="color: {{darkMode ? '#588157' : '#588157'}};">预计需要:</text>
+          <text class="time-value" style="color: {{darkMode ? '#dad7cd' : '#344e41'}};">{{calculateRemainingTime(item.hoursPracticed, item.targetHours)}}</text>
         </view>
       </view>
     </block>
   </view>
+  
+
 </view>

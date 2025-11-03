@@ -1,4 +1,4 @@
-// skillList.js
+// 技能列表页面 - 重制版
 Page({
   data: {
     skills: [],
@@ -18,200 +18,228 @@ Page({
         hoursPracticed: 650.25,
         targetHours: 10000,
         createdAt: new Date().toISOString()
+      },
+      {
+        id: 3,
+        name: '绘画',
+        hoursPracticed: 150.75,
+        targetHours: 10000,
+        createdAt: new Date().toISOString()
       }
     ]
   },
   
+  // 页面加载
   onLoad: function() {
-    // 获取全局应用实例并保存为实例属性
     this.app = getApp();
-    
-    // 设置初始主题和技能数据
-    let skillsData = this.app.globalData.skills || [];
-    console.log('onLoad - 原始技能数据:', skillsData);
-    
-    // 如果没有技能数据，使用默认模拟数据
-    if (skillsData.length === 0) {
-      skillsData = this.data.defaultSkills;
-    }
-    
-    // 为每个技能预先计算并添加百分比和阶段
-    const skillsWithPercentage = skillsData.map(skill => {
-      const hours = parseFloat(skill.hoursPracticed) || 0;
-      const target = parseFloat(skill.targetHours) || 10000;
-      // 确保百分比不超过100%，并格式化为两位小数
-      const percentage = Math.min((hours / target) * 100, 100).toFixed(2);
-      
-      // 预先计算技能阶段
-      const stage = this.app.getSkillStage(hours);
-      console.log('onLoad - 技能:', skill.name, '小时:', hours, '计算得到阶段:', stage);
-      
-      return {
-        ...skill,
-        progressPercentage: percentage, // 预先计算好的百分比
-        stage: stage // 预先计算好的技能阶段
-      };
-    });
-    console.log('onLoad - 处理后技能数据:', skillsWithPercentage);
-    
-    this.setData({
-      skills: skillsWithPercentage,
-      darkMode: this.app.globalData.darkMode
-    });
-    
-    // 根据主题设置页面样式
+    this.loadSkillsData();
     this.updateTheme();
   },
   
-  // 更新页面主题
-  updateTheme: function() {
-    
-    // 重新获取并应用全局样式变量，触发样式更新
-    if (this.app.globalData.darkMode) {
-      this.setData({
-        theme: 'dark',
-        // 显式设置深色模式的变量值，确保样式正确应用
-        darkModeClass: 'dark-mode'
-      });
-      wx.setBackgroundColor({ backgroundColor: '#1a1a1a' });
-    } else {
-      this.setData({
-        theme: 'light',
-        darkModeClass: ''
-      });
-      wx.setBackgroundColor({ backgroundColor: '#f8f8f8' });
-    }
-    
-    // 强制重新渲染页面
-    this.setData({ renderTrigger: Math.random() });
-  },
-  
-
-  
-
-
-  // 在onShow中添加调试日志和防御性代码
+  // 页面显示（每次进入页面都会执行）
   onShow: function() {
-    // 每次显示页面时刷新技能数据和主题
     if (!this.app) {
       this.app = getApp();
     }
     
-    // 获取技能数据并确保其格式正确
-    let skillsData = this.app.globalData.skills || [];
-    console.log('onShow - 原始技能数据:', skillsData);
-    
-    // 如果没有技能数据或数据格式不正确，使用默认数据
-    if (!Array.isArray(skillsData) || skillsData.length === 0) {
-      console.log('使用默认技能数据，因为全局数据为空或格式不正确');
-      skillsData = this.data.defaultSkills;
-    } else {
-      // 检查并修复每个技能项的字段
-      skillsData = skillsData.map(skill => {
-        // 确保必要字段存在且类型正确
-        return {
-          ...skill,
-          hoursPracticed: parseFloat(skill.hoursPracticed) || 0,
-          targetHours: parseFloat(skill.targetHours) || 10000,
-          name: skill.name || '未命名技能'
-        };
-      });
+    // 检查主题是否发生变化
+    if (this.data.darkMode !== this.app.globalData.darkMode) {
+      this.updateTheme();
     }
     
-    // 为每个技能预先计算并添加百分比和阶段
-    const skillsWithPercentage = skillsData.map(skill => {
+    // 重新加载技能数据
+    this.loadSkillsData();
+  },
+  
+  // 加载并处理技能数据
+  loadSkillsData: function() {
+    try {
+      let skillsData = this.app.globalData.skills || [];
+      
+      // 如果没有技能数据，使用默认模拟数据
+      if (!Array.isArray(skillsData) || skillsData.length === 0) {
+        skillsData = this.data.defaultSkills;
+        // 如果使用默认数据，也更新到全局
+        this.app.globalData.skills = skillsData;
+        wx.setStorageSync('skills', skillsData);
+      } else {
+        // 数据校验和清洗
+        skillsData = skillsData.map(skill => {
+          return {
+            ...skill,
+            hoursPracticed: parseFloat(skill.hoursPracticed) || 0,
+            targetHours: parseFloat(skill.targetHours) || 10000,
+            name: skill.name || '未命名技能',
+            id: skill.id || Date.now() + Math.random() // 确保有ID
+          };
+        });
+      }
+      
+      // 处理技能数据（添加百分比、阶段等）
+      const processedSkills = this.processSkillsData(skillsData);
+      
+      // 更新数据并添加加载动画效果
+      this.setData({
+        skills: processedSkills
+      });
+    } catch (error) {
+      console.error('加载技能数据失败:', error);
+      // 加载失败时使用默认数据
+      this.setData({
+        skills: this.processSkillsData(this.data.defaultSkills)
+      });
+      wx.showToast({
+        title: '加载数据失败',
+        icon: 'none'
+      });
+    }
+  },
+  
+  // 处理技能数据，添加计算字段
+  processSkillsData: function(skills) {
+    return skills.map(skill => {
       const hours = parseFloat(skill.hoursPracticed) || 0;
       const target = parseFloat(skill.targetHours) || 10000;
-      // 确保百分比不超过100%，并格式化为两位小数
+      
+      // 计算进度百分比
       const percentage = Math.min((hours / target) * 100, 100).toFixed(2);
       
-      // 预先计算技能阶段
-      const stage = this.app.getSkillStage(hours);
-      console.log('onShow - 技能:', skill.name, '小时:', hours, '计算得到阶段:', stage);
+      // 获取技能阶段
+      let stage = '初学者';
+      if (this.app && typeof this.app.getSkillStage === 'function') {
+        stage = this.app.getSkillStage(hours);
+      } else {
+        // 如果全局方法不可用，使用本地计算
+        if (hours >= 10000) stage = '大师';
+        else if (hours >= 5000) stage = '专家';
+        else if (hours >= 2000) stage = '熟练';
+        else if (hours >= 1000) stage = '精通';
+        else if (hours >= 500) stage = '进阶';
+        else if (hours >= 100) stage = '中级';
+      }
       
       return {
         ...skill,
-        progressPercentage: percentage, // 预先计算好的百分比
-        stage: stage // 预先计算好的技能阶段
+        progressPercentage: percentage,
+        stage: stage
       };
     });
-    console.log('onShow - 处理后技能数据:', skillsWithPercentage);
-    
-    this.setData({
-      skills: skillsWithPercentage,
-      darkMode: this.app.globalData.darkMode
-    });
-    
-    this.updateTheme();
   },
   
-
+  // 更新页面主题
+  updateTheme: function() {
+    const isDarkMode = this.app.globalData.darkMode;
+    
+    this.setData({
+      darkMode: isDarkMode,
+      darkModeClass: isDarkMode ? 'dark-mode' : ''
+    });
+    
+    // 设置页面背景色，与app.wxss中定义的颜色保持一致
+    wx.setBackgroundColor({
+      backgroundColor: isDarkMode ? '#344e41' : '#dad7cd'
+    });
+  },
   
-  // 点击技能卡片跳转到记录练习时间页面
+  // 点击技能名称跳转到记录页面
   onSkillTap: function(e) {
-    // 从事件对象中获取技能ID和名称
     const { skillId, skillName } = e.currentTarget.dataset;
     
-    // 跳转到记录练习时间页面，并传递技能信息
     wx.navigateTo({
       url: `/pages/recordPractice/recordPractice?skillId=${skillId}&skillName=${encodeURIComponent(skillName)}`
     });
   },
-
+  
   // 删除技能功能
   onDeleteSkill: function(e) {
     try {
-      // 从事件对象中获取技能ID和名称
       const { skillId, skillName } = e.currentTarget.dataset;
       
       // 弹出确认对话框
       wx.showModal({
         title: '确认删除',
         content: `确定要删除"${skillName}"技能吗？删除后相关的练习记录也将被清除。`,
+        showCancel: true,
+        cancelText: '取消',
+        confirmText: '删除',
+        confirmColor: '#FF4D4F',
         success: (res) => {
           if (res.confirm) {
-            // 确保app实例可用
-            if (!this.app) {
-              this.app = getApp();
-            }
-            
-            // 从全局数据中删除技能
-            const updatedSkills = this.app.globalData.skills.filter(skill => skill.id !== skillId);
-            this.app.globalData.skills = updatedSkills;
-            
-            // 更新本地存储
-            wx.setStorageSync('skills', updatedSkills);
-            
-            // 更新页面数据
-            this.setData({
-              skills: updatedSkills.map(skill => {
-                const hours = parseFloat(skill.hoursPracticed) || 0;
-                const target = parseFloat(skill.targetHours) || 10000;
-                const percentage = Math.min((hours / target) * 100, 100).toFixed(2);
-                const stage = this.app.getSkillStage(hours);
-                
-                return {
-                  ...skill,
-                  progressPercentage: percentage,
-                  stage: stage
-                };
-              })
-            });
-            
-            // 显示成功提示
-            wx.showToast({
-              title: '技能已删除',
-              icon: 'success'
-            });
+            // 删除操作
+            this.performDeleteSkill(skillId, skillName);
           }
         }
       });
     } catch (error) {
+      console.error('删除技能失败:', error);
       wx.showToast({
         title: '删除失败',
         icon: 'none'
       });
     }
+  },
+  
+  // 执行删除技能的操作
+  performDeleteSkill: function(skillId, skillName) {
+    // 更新全局数据
+    const updatedSkills = this.app.globalData.skills.filter(skill => skill.id !== skillId);
+    this.app.globalData.skills = updatedSkills;
+    
+    // 更新本地存储
+    wx.setStorageSync('skills', updatedSkills);
+    
+    // 更新页面数据
+    this.setData({
+      skills: this.processSkillsData(updatedSkills)
+    });
+    
+    // 显示成功提示
+    wx.showToast({
+      title: `已删除${skillName}`,
+      icon: 'success',
+      duration: 2000
+    });
+    
+    // 添加删除动画效果（可选）
+    // 这里可以通过CSS类切换实现更丰富的动画
+  },
+  
+  // 计算预计完成时间
+  calculateRemainingTime: function(practicedHours, targetHours) {
+    try {
+      const practiced = parseFloat(practicedHours) || 0;
+      const target = parseFloat(targetHours) || 10000;
+      
+      // 如果已经完成目标
+      if (practiced >= target) {
+        return '🎉 已完成目标！';
+      }
+      
+      const remaining = target - practiced;
+      
+      // 假设平均每天练习2小时
+      const avgDailyHours = 2;
+      const daysRemaining = Math.ceil(remaining / avgDailyHours);
+      
+      if (daysRemaining < 30) {
+        return `${daysRemaining} 天`;
+      } else if (daysRemaining < 365) {
+        const months = Math.floor(daysRemaining / 30);
+        const remainingDays = daysRemaining % 30;
+        if (remainingDays === 0) {
+          return `${months} 个月`;
+        }
+        return `${months} 个月 ${remainingDays} 天`;
+      } else {
+        const years = Math.floor(daysRemaining / 365);
+        const remainingMonths = Math.floor((daysRemaining % 365) / 30);
+        if (remainingMonths === 0) {
+          return `${years} 年`;
+        }
+        return `${years} 年 ${remainingMonths} 个月`;
+      }
+    } catch (error) {
+      return '计算中...';
+    }
   }
-
 });
