@@ -1,118 +1,378 @@
-/* recordPractice.wxss */
-
-/* 表单容器样式 */
-.container form {
-  background-color: var(--card-background-color);
+/* recordPractice.wxss - 重新设计 */
+.container {
   padding: 30rpx;
-  border-radius: 15rpx;
-  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
 }
 
-/* 表单组样式 */
-.form-group {
+/* 头部样式 */
+.header {
   margin-bottom: 30rpx;
 }
 
-/* 标签样式 */
-.form-group label {
-  display: block;
+.header h1 {
+  font-size: 48rpx;
+  font-weight: 700;
   margin-bottom: 10rpx;
-  font-size: 28rpx;
-  color: var(--text-color);
+  color: var(--text-primary);
 }
 
-/* 选择器样式 */
-.picker {
-  padding: 20rpx;
-  border: 1rpx solid #ddd;
-  border-radius: 8rpx;
-  background-color: var(--card-background-color);
-  color: var(--text-color);
-  font-size: 50rpx;
-}
-
-/* 输入框样式 */
-.form-group input {
-  width: 100%;
-  padding: 20rpx;
-  font-size: 28rpx;
-  border: 1rpx solid #ddd;
-  border-radius: 8rpx;
-  background-color: var(--card-background-color);
-  color: var(--text-color);
-  box-sizing: border-box;
-}
-
-/* 深色模式下的输入框和选择器焦点样式 */
-page.dark-mode .form-group input:focus,
-page.dark-mode .picker {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 8rpx rgba(97, 218, 251, 0.4);
-}
-
-/* 错误信息样式 */
-.error-message {
-  color: #ff4d4f;
+.header p {
   font-size: 26rpx;
-  margin-bottom: 20rpx;
-}
-
-/* 按钮样式 */
-.btn-primary {
-  width: 100%;
-  padding: 20rpx;
-  font-size: 30rpx;
-  font-weight: bold;
-  color: white;
-  background-color: var(--primary-color);
-  border: none;
-  border-radius: 8rpx;
-  margin-top: 20rpx;
-}
-
-/* 深色模式按钮样式 */
-page.dark-mode .btn-primary {
-  background-color: var(--primary-color);
-  color: #2a2a2a;
-}
-
-/* 按钮悬停效果 */
-.btn-primary:active {
-  opacity: 0.9;
-  transform: scale(0.98);
+  color: var(--text-secondary);
+  margin-top: 0;
 }
 
 /* 空状态样式 */
-.empty {
+.empty-state {
   text-align: center;
-  padding: 60rpx 20rpx;
-  color: var(--secondary-text-color);
+  padding: 120rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--card-background-color);
+  border-radius: 20rpx;
+  box-shadow: var(--card-shadow);
 }
 
-/* 选择技能弹出框样式 - 针对picker组件的全局样式 */
-/* 尝试直接选择器 */
-.wx-picker-content {
-  font-size: 40rpx !important;
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 30rpx;
 }
 
-/* 微信小程序picker弹出层的特定样式类 */
-.picker-view {
-  font-size: 60rpx !important;
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-secondary);
+  margin-bottom: 40rpx;
 }
 
-.picker-view-column {
-  font-size: 40rpx !important;
+/* 表单卡片样式 */
+.form-card {
+  background-color: var(--card-background-color);
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 40rpx;
 }
 
-/* 特定picker的样式 */
-.large-picker {
-  font-size: 32rpx !important;
+/* 表单区块 */
+.form-section {
+  margin-bottom: 50rpx;
 }
 
-/* 优化样式，确保在不同设备上都能正常显示 */
-.picker {
-  padding: 15rpx 20rpx !important;
-  height: 45rpx !important;
-  font-size: 32rpx !important;
-  min-height: 45rpx !important;
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-label {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20rpx;
+}
+
+/* 技能选择样式 */
+.skill-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+/* 最近技能快速选择 */
+.recent-skills {
+  margin-bottom: 20rpx;
+}
+
+.skills-scroll {
+  white-space: nowrap;
+  padding-bottom: 10rpx;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15rpx 30rpx;
+  margin-right: 15rpx;
+  background-color: var(--chip-background);
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.skill-chip.selected {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+.skill-chip:active {
+  transform: scale(0.95);
+}
+
+/* 技能选择器 */
+.skill-picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 30rpx;
+  background-color: var(--input-background);
+  border-radius: 15rpx;
+  border: 2rpx solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.skill-picker:active {
+  border-color: var(--accent-color);
+}
+
+.picker-text {
+  font-size: 32rpx;
+  color: var(--text-primary);
+}
+
+.arrow-icon {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+/* 时间选择器样式 */
+.time-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.time-picker-card {
+  background-color: var(--card-background-alt);
+  border-radius: 15rpx;
+  padding: 30rpx;
+  border: 2rpx solid var(--border-color);
+}
+
+/* 时间显示 */
+.time-display {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 40rpx;
+}
+
+.time-hours {
+  font-size: 80rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.time-separator {
+  font-size: 60rpx;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0 20rpx;
+}
+
+.time-minutes {
+  font-size: 60rpx;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* 时间滑块 */
+.time-slider-container {
+  margin-bottom: 30rpx;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+  margin-top: 10rpx;
+}
+
+/* 分钟选项 */
+.minutes-options {
+  display: flex;
+  justify-content: space-between;
+  gap: 15rpx;
+}
+
+.minute-option {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx;
+  background-color: var(--input-background);
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  border: 2rpx solid transparent;
+}
+
+.minute-option.selected {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+.minute-option:active {
+  transform: scale(0.95);
+}
+
+/* 练习笔记输入 */
+.notes-input {
+  width: 100%;
+  min-height: 160rpx;
+  padding: 25rpx 30rpx;
+  background-color: var(--input-background);
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  border: 2rpx solid var(--border-color);
+  box-sizing: border-box;
+  resize: none;
+}
+
+/* 提交按钮 */
+.submit-btn {
+  width: 100%;
+  height: 90rpx;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 15rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  margin-top: 40rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-btn:active {
+  transform: translateY(4rpx);
+  box-shadow: 0 3rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.button-hover {
+  opacity: 0.9;
+}
+
+/* 最近活动样式 */
+.recent-activities {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 25rpx;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.activity-item {
+  background-color: var(--card-background-color);
+  padding: 30rpx;
+  border-radius: 15rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2rpx solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.activity-item:active {
+  background-color: var(--card-background-alt);
+}
+
+.activity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.activity-skill {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.activity-time {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.activity-date {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+/* 提示信息 */
+.tip-container {
+  background-color: var(--info-background);
+  padding: 25rpx 30rpx;
+  border-radius: 15rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-top: 30rpx;
+}
+
+.tip-icon {
+  font-size: 32rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+/* 深色模式适配 */
+.dark .skill-picker,
+.dark .minute-option,
+.dark .notes-input {
+  border-color: var(--border-color-dark);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-card,
+.empty-state,
+.recent-activities {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 响应式调整 */
+@media (max-width: 375rpx) {
+  .time-hours {
+    font-size: 60rpx;
+  }
+  
+  .time-separator {
+    font-size: 45rpx;
+  }
+  
+  .time-minutes {
+    font-size: 45rpx;
+  }
 }

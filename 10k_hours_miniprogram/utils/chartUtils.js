@@ -17,8 +17,10 @@ export const initPieChart = function(canvasId, data, darkMode, that) {
   const ctx = wx.createCanvasContext(canvasId);
   const { labels, datasets } = data;
   const chartData = datasets[0].data;
-  // 使用指定的五种颜色
-  const defaultColors = ['#dad7cd', '#a3b18a', '#588157', '#3a5a40', '#344e41'];
+  // 使用与应用全局风格一致的森林风格配色
+  const defaultColors = darkMode 
+    ? ['#3a5a40', '#588157', '#74b7a8', '#a3b18a', '#4a654c']
+    : ['#588157', '#74b7a8', '#86aa7d', '#a3b18a', '#dad7cd'];
   const colors = datasets[0].backgroundColor && datasets[0].backgroundColor.length > 0 ? datasets[0].backgroundColor : defaultColors;
   
   // 获取实际的画布尺寸
@@ -85,10 +87,13 @@ export const initPieChart = function(canvasId, data, darkMode, that) {
       // 确保饼图居中 - 调整中心坐标以确保饼图完全居中
       const centerX = canvasWidth / 2;
       const centerY = canvasHeight / 3; // 将饼图上移，为下方文本留出空间
-      const radius = Math.min(canvasWidth, canvasHeight) / 4; // 适当调整半径大小
+      const radius = Math.min(canvasWidth, canvasHeight) / 4 * 0.9; // 适当调整半径大小，使其更美观
       
       // 从顶部开始绘制饼图
       let startAngle = -Math.PI / 2;
+      
+      // 为每个扇形添加轻微的阴影效果
+      ctx.setShadow(2, 2, 4, darkMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.2)');
       
       chartData.forEach((value, index) => {
         console.log(`绘制扇形 ${index}: 值=${value}`);
@@ -101,25 +106,48 @@ export const initPieChart = function(canvasId, data, darkMode, that) {
         ctx.moveTo(centerX, centerY);
         ctx.arc(centerX, centerY, radius, startAngle, endAngle);
         ctx.closePath();
-        ctx.setFillStyle(colors[index % colors.length]);
+        
+        // 为颜色添加透明度，使图表更有层次感
+        const baseColor = colors[index % colors.length];
+        ctx.setFillStyle(baseColor);
         ctx.fill();
         
         // 添加边框
-        ctx.setStrokeStyle(darkMode ? '#333' : '#fff');
-        ctx.setLineWidth(1);
+        ctx.setStrokeStyle(darkMode ? '#444' : '#fff');
+        ctx.setLineWidth(2);
         ctx.stroke();
+        
+        // 移除饼图内部百分比显示
         
         // 更新起始角度
         startAngle = endAngle;
       });
       
+      // 移除阴影效果
+      ctx.setShadow(0, 0, 0, 'rgba(0, 0, 0, 0)');
+      
+      // 添加内环效果，使饼图更有层次感
+      if (chartData.length > 1) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.4, 0, 2 * Math.PI);
+        ctx.setFillStyle(darkMode ? '#1a1a1a' : '#ffffff');
+        ctx.fill();
+        ctx.setStrokeStyle(darkMode ? '#333' : '#e0e0e0');
+        ctx.setLineWidth(1);
+        ctx.stroke();
+      }
+      
       // 将文本移到饼图外部下方
-      ctx.setFontSize(16);
+      ctx.setFontSize(18);
       ctx.setFillStyle(darkMode ? '#dad7cd' : '#344e41');
       ctx.setTextAlign('center');
       ctx.setTextBaseline('middle');
-      ctx.fillText('总练习时间', centerX, centerY + radius + 30);
-      ctx.fillText(total.toFixed(1) + ' 小时', centerX, centerY + radius + 55);
+      ctx.fillText('总练习时间', centerX, centerY + radius + 35);
+      
+      // 为总时间添加强调效果
+      ctx.setFontSize(20);
+      ctx.setFillStyle(darkMode ? '#a3b18a' : '#588157');
+      ctx.fillText(total.toFixed(1) + ' 小时', centerX, centerY + radius + 60);
       
       // 绘制图例
       drawLegend(ctx, labels, colors, darkMode, canvasWidth, canvasHeight);
@@ -260,53 +288,107 @@ export const initBarChart = function(canvasId, data, darkMode) {
   // 绘制水平柱状图
   chartData.forEach((value, index) => {
     // 计算柱子位置
-    const barSpacing = (height - topPadding - bottomPadding) / sortedLabels.length * 0.8; // 减小技能之间的间距
+    const barSpacing = (height - topPadding - bottomPadding) / sortedLabels.length * 0.75; // 调整间距，使布局更合理
     const y = topPadding + index * barSpacing + (barSpacing - barHeight) / 2 + barHeight / 2;
     
-    // 计算柱子宽度，保持柱子紧贴Y轴，同时使用缩小系数0.8使柱子变窄
-    const barWidth = (value / displayMaxValue) * (width - rightPadding - yAxisX) * 0.8;
-    const x = yAxisX; // 让柱子紧贴Y轴
+    // 计算柱子宽度，保持柱子紧贴Y轴，使用更合理的缩小系数
+    const barWidth = (value / displayMaxValue) * (width - rightPadding - yAxisX) * 0.85;
+    const x = yAxisX + 5; // 轻微缩进，避免紧贴Y轴
     
     // 确保即使很小的值也能显示
-    const finalBarWidth = Math.max(barWidth, 10); // 最小宽度10像素
+    const finalBarWidth = Math.max(barWidth, 15); // 增加最小宽度，提高可视性
     
     console.log('绘制水平柱子 ' + index + ' (', sortedLabels[index], '): x=' + x + ', y=' + y + ', 宽=' + finalBarWidth + ', 高=' + barHeight);
     
-    // 绘制柱子
+    // 添加柱子阴影效果，与应用全局阴影保持一致
+    ctx.setShadow(2, 2, 3, darkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(88, 129, 87, 0.1)');
+    
+    // 为不同进度的柱子使用不同深浅的颜色，使用全局样式中的颜色变量
+    let gradientBarColor = barColor;
+    if (value > 70) {
+      // 高进度 - 较深的颜色
+      gradientBarColor = darkMode ? '#3a5a40' : '#588157';
+    } else if (value > 30) {
+      // 中进度 - 中等颜色
+      gradientBarColor = darkMode ? '#588157' : '#6e9b66';
+    } else {
+      // 低进度 - 较浅的颜色
+      gradientBarColor = darkMode ? '#a3b18a' : '#86aa7d';
+    }
+    
+    // 绘制柱子，使用圆角矩形
+    const radius = 6; // 圆角大小
     ctx.beginPath();
-    ctx.setFillStyle(barColor);
-    ctx.fillRect(x, y - barHeight / 2, finalBarWidth, barHeight);
+    ctx.moveTo(x + radius, y - barHeight / 2);
+    ctx.lineTo(x + finalBarWidth - radius, y - barHeight / 2);
+    ctx.arcTo(x + finalBarWidth, y - barHeight / 2, x + finalBarWidth, y - barHeight / 2 + radius, radius);
+    ctx.lineTo(x + finalBarWidth, y + barHeight / 2 - radius);
+    ctx.arcTo(x + finalBarWidth, y + barHeight / 2, x + finalBarWidth - radius, y + barHeight / 2, radius);
+    ctx.lineTo(x + radius, y + barHeight / 2);
+    ctx.arcTo(x, y + barHeight / 2, x, y + barHeight / 2 - radius, radius);
+    ctx.lineTo(x, y - barHeight / 2 + radius);
+    ctx.arcTo(x, y - barHeight / 2, x + radius, y - barHeight / 2, radius);
+    ctx.closePath();
+    
+    ctx.setFillStyle(gradientBarColor);
+    ctx.fill();
+    
+    // 移除阴影
+    ctx.setShadow(0, 0, 0, 'rgba(0, 0, 0, 0)');
     
     // 为柱子添加边框
-    ctx.setStrokeStyle(darkMode ? '#ffffff' : '#333');
-    ctx.setLineWidth(1.5);
-    ctx.strokeRect(x, y - barHeight / 2, finalBarWidth, barHeight);
+    ctx.setStrokeStyle(darkMode ? '#555' : '#ddd');
+    ctx.setLineWidth(1);
+    ctx.stroke();
     
-    // 绘制数值
-    if (finalBarWidth > 30) { // 只有当柱子足够宽时才显示数值
-      ctx.setFontSize(12);
-      ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
-      ctx.setTextAlign('center');
-      ctx.setTextBaseline('middle');
-      ctx.fillText(value.toFixed(1) + '%', x + finalBarWidth / 2, y);
-    }
+    // 只在柱子下方显示文字和百分比，不在柱子内部显示任何文本
+    ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
+    ctx.setTextAlign('center');
+    
+    // 计算柱子中心点，用于居中显示文本
+    const centerX = x + finalBarWidth / 2;
+    
+    // 第一行显示百分比（在柱子下方）
+    ctx.setFontSize(14);
+    ctx.setTextBaseline('top');
+    ctx.fillText(value.toFixed(1) + '%', centerX, y + barHeight / 2 + 10);
+    
+    // 第二行显示完整文字标签（在百分比下方）
+    const label = sortedLabels[index];
+    const displayLabel = label.length > 12 ? label.substring(0, 12) + '...' : label;
+    ctx.setFontSize(12);
+    ctx.fillText(displayLabel, centerX, y + barHeight / 2 + 28);
   });
   
-  // 绘制Y轴标签
-  sortedLabels.forEach((label, index) => {
-    // 计算标签位置
-    const barSpacing = (height - topPadding - bottomPadding) / sortedLabels.length * 0.8; // 减小技能之间的间距
-    const y = topPadding + index * barSpacing + (barSpacing - barHeight) / 2 + barHeight / 2;
+  // 移除Y轴标签，只保留柱状图下方的文字和百分比显示
+  
+  // 添加进度等级指示器，使用与应用全局风格一致的颜色
+  const levels = [
+    { threshold: 10, label: '入门', color: darkMode ? '#a3b18a' : '#86aa7d' },
+    { threshold: 30, label: '熟练', color: darkMode ? '#588157' : '#6e9b66' },
+    { threshold: 70, label: '精通', color: darkMode ? '#3a5a40' : '#588157' }
+  ];
+  
+  const indicatorY = height - 80;
+  let indicatorX = leftPadding + 20;
+  
+  levels.forEach(level => {
+    // 绘制颜色指示条
+    ctx.beginPath();
+    ctx.setFillStyle(level.color);
+    ctx.fillRect(indicatorX, indicatorY - 15, 30, 15);
+    ctx.setStrokeStyle(darkMode ? '#555' : '#ddd');
+    ctx.setLineWidth(1);
+    ctx.strokeRect(indicatorX, indicatorY - 15, 30, 15);
     
-    console.log('绘制标签 ' + index + ' (', label, '): y=' + y);
-    
-    // 设置文本样式
-    ctx.setFontSize(14);
+    // 绘制文字
+    ctx.setFontSize(12);
     ctx.setFillStyle(darkMode ? '#ffffff' : '#000000');
-    ctx.setTextAlign('right');
-    ctx.setTextBaseline('bottom');
-    // 将标签移至柱子下方
-    ctx.fillText(label, leftPadding - 15, y + barHeight / 2 + 20);
+    ctx.setTextAlign('left');
+    ctx.setTextBaseline('middle');
+    ctx.fillText(level.label, indicatorX + 35, indicatorY - 7);
+    
+    indicatorX += 100;
   });
   
   // 添加X轴标题"完成度"

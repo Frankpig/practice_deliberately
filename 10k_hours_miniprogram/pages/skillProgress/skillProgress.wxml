@@ -1,28 +1,36 @@
 <!-- skillProgress.wxml -->
 <view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx;">
+  <!-- 页面标题 -->
   <text class="page-title">练习进度</text>
   
-  <view wx:if="{{skills.length === 0}}" class="empty">
+  <!-- 空状态展示 -->
+  <view wx:if="{{skills.length === 0}}" class="empty fade-in-up">
     <text>暂无技能数据，请先添加技能</text>
   </view>
   
+  <!-- 图表区域 -->
   <view wx:else class="charts-wrapper">
-    <!-- 饼图容器 -->
-    <view class="chart-container">
+    <!-- 饼图容器 - 添加动画效果 -->
+    <view class="chart-container fade-in-up" style="animation-delay: 0.1s;">
       <view class="chart-title">练习时间分布</view>
       <view class="pie-chart">
-        <!-- 在实际开发中，这里会使用ec-canvas组件 -->
-        <canvas id="pieCanvas" canvas-id="pieCanvas" style="width: 100%; height: 100%;" bindtap="onChartTap"></canvas>
+        <!-- 优化canvas性能和交互 -->
+        <canvas id="pieCanvas" canvas-id="pieCanvas" style="width: 100%; height: 100%;" bindtap="onChartTap" bindlongpress="onChartLongPress"></canvas>
       </view>
     </view>
     
-    <!-- 柱状图容器 -->
-    <view class="chart-container">
+    <!-- 柱状图容器 - 添加动画效果 -->
+    <view class="chart-container fade-in-up" style="animation-delay: 0.3s;">
       <view class="chart-title">练习进度</view>
       <view class="bar-chart">
-        <!-- 在实际开发中，这里会使用ec-canvas组件 -->
-        <canvas id="barCanvas" canvas-id="barCanvas" style="width: 100%; height: 100%;"></canvas>
+        <!-- 优化canvas性能 -->
+        <canvas id="barCanvas" canvas-id="barCanvas" style="width: 100%; height: 100%;" bindtap="onBarChartTap"></canvas>
       </view>
+    </view>
+    
+    <!-- 添加最后更新时间 -->
+    <view class="update-info fade-in-up" style="animation-delay: 0.5s;">
+      <text class="update-text">最后更新: {{lastUpdateTime || '刚刚'}}</text>
     </view>
   </view>
 </view>

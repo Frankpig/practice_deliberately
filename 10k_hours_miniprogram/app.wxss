@@ -1,40 +1,75 @@
 /* app.wxss */
-
-/* 全局变量 - 使用指定的五种颜色重新设计 */
+/* 全局样式变量 - 森林风格 */
 page {
-  --text-color: #344e41;
-  --secondary-text-color: #588157;
-  --background-color: #dad7cd;
-  --card-background-color: #ffffff;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --primary-color: #a3b18a;
-  --secondary-color: #588157;
-  --accent-color: #3a5a40;
-  --dark-accent-color: #344e41;
-  --progress-bar-background: #dad7cd;
-  --progress-bar-gradient: linear-gradient(90deg, #a3b18a, #588157);
+  --text-primary: #3a5a40;
+  --text-secondary: #588157;
+  --text-tertiary: #74b7a8;
+  --background-primary: #dad7cd;
+  --background-secondary: #e9f5db;
+  --card-background: #ffffff;
+  --card-background-alt: #f1faee;
   --border-color: #a3b18a;
-  --input-background-color: #ffffff;
-  --error-color: #FF4D4F;
+  --accent-color: #588157;
+  --accent-color-light: #74b7a8;
+  --error-color: #bc4749;
+  --success-color: #48a14d;
+  --warning-color: #f2cc8f;
+  --info-color: #577590;
+  --shadow-color: rgba(88, 129, 87, 0.1);
+  --progress-bg: #e9f5db;
+  --progress-fill: #588157;
+  /* 保留原有变量以确保兼容性 */
+  --text-color: var(--text-primary);
+  --secondary-text-color: var(--text-secondary);
+  --background-color: var(--background-primary);
+  --card-background-color: var(--card-background);
+  --card-shadow: 0 2px 8px var(--shadow-color);
+  --primary-color: var(--accent-color-light);
+  --secondary-color: var(--accent-color);
+  --accent-color: var(--accent-color);
+  --dark-accent-color: var(--text-primary);
+  --progress-bar-background: var(--progress-bg);
+  --progress-bar-gradient: linear-gradient(90deg, var(--accent-color-light), var(--accent-color));
+  --border-color: var(--border-color);
+  --input-background-color: var(--card-background);
+  --error-color: var(--error-color);
 }
 
-/* 深色模式全局变量 */
+/* 深色模式变量覆盖 - 森林暗色 */
 page.dark-mode,
 .container.dark-mode {
-  --text-color: #dad7cd;
-  --secondary-text-color: #a3b18a;
-  --background-color: #344e41;
-  --card-background-color: #3a5a40;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --primary-color: #a3b18a;
-  --secondary-color: #588157;
-  --accent-color: #a3b18a;
-  --dark-accent-color: #dad7cd;
-  --progress-bar-background: #344e41;
-  --progress-bar-gradient: linear-gradient(90deg, #a3b18a, #588157);
-  --border-color: #588157;
-  --input-background-color: #3a5a40;
-  --error-color: #FF6B6B;
+  --text-primary: #e9f5db;
+  --text-secondary: #a3b18a;
+  --text-tertiary: #74b7a8;
+  --background-primary: #344e41;
+  --background-secondary: #1e3a29;
+  --card-background: #2d3f36;
+  --card-background-alt: #2d3d36;
+  --border-color: #4a654c;
+  --accent-color: #74b7a8;
+  --accent-color-light: #a3b18a;
+  --error-color: #f28482;
+  --success-color: #74b7a8;
+  --warning-color: #e9c46a;
+  --info-color: #8ecae6;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --progress-bg: #1e3a29;
+  --progress-fill: #74b7a8;
+  /* 保留原有变量以确保兼容性 */
+  --text-color: var(--text-primary);
+  --secondary-text-color: var(--text-secondary);
+  --background-color: var(--background-primary);
+  --card-background-color: var(--card-background);
+  --card-shadow: 0 2px 8px var(--shadow-color);
+  --primary-color: var(--accent-color-light);
+  --secondary-color: var(--accent-color);
+  --accent-color: var(--accent-color);
+  --dark-accent-color: var(--text-primary);
+  --progress-bar-background: var(--progress-bg);
+  --progress-bar-gradient: linear-gradient(90deg, var(--accent-color-light), var(--accent-color));
+  --border-color: var(--border-color);
+  --input-background-color: var(--card-background);
+  --error-color: var(--error-color);
 }
 
 /* 基础样式 */

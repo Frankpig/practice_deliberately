@@ -1,36 +1,108 @@
-<!-- recordPractice.wxml -->
-<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx;">
-  <h2 style="color: var(--text-color);">记录练习时间</h2>
-  
-  <view style="height: 40rpx;"></view> <!-- 增加行间距 -->
-  
-  <view wx:if="{{skills.length === 0}}" class="empty" style="text-align: center; padding: 60rpx 20rpx; color: var(--secondary-text-color);">
-    <p>暂无技能，请先添加技能</p>
+<!-- recordPractice.wxml - 重新设计 -->
+<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; padding: 30rpx; transition: all 0.3s ease;">
+  <!-- 页面标题 -->
+  <view class="header">
+    <h1 style="color: var(--text-primary); font-weight: 600; margin-bottom: 10rpx;">记录练习时间</h1>
+    <p style="color: var(--text-secondary); font-size: 26rpx; margin-top: 0;">{{greeting}}, 记录今日的进步</p>
   </view>
-  
-  <view wx:else style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
-    <view class="form-group">
-      <label for="skillSelect" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">选择技能</label>
-      <picker bindchange="onSkillSelect" value="{{selectedSkillIndex}}" range="{{skills}}" range-key="name" style="width: 100%; font-size: 32rpx;" picker-class="large-picker">
-        <view class="picker" style="padding: 15rpx 20rpx; height: 45rpx; border: 1rpx solid #ddd; border-radius: 8rpx; background-color: var(--card-background-color); color: var(--text-color); display: flex; align-items: center; font-size: 32rpx;">
-          {{selectedSkillName}}
-        </view>
-      </picker>
-    </view>
-    
-    <view class="form-group">
-      <label for="practiceHours" style="display: block; margin-bottom: 10rpx; font-size: 28rpx; color: var(--text-color);">练习时间</label>
-      <picker mode="multiSelector" bindchange="onPracticeTimeChange" bindcolumnchange="onTimeColumnChange" value="{{timeValues}}" range="{{timeRanges}}" style="width: 100%; font-size: 32rpx;">
-        <view class="picker" style="padding: 15rpx 20rpx; height: 45rpx; border: 1rpx solid #ddd; border-radius: 8rpx; background-color: var(--card-background-color); color: var(--text-color); display: flex; align-items: center; font-size: 32rpx;">
-          {{selectedHours}}小时{{selectedMinutes}}分钟
-        </view>
-      </picker>
-    </view>
-    
 
-    
-    <button type="default" bindtap="handleSubmit" class="btn-primary" hover-class="button-hover" style="width: 100%; margin-top: 20rpx; background-color: var(--primary-color); color: white;">
-      记录
-    </button>
+  <view style="height: 40rpx;"></view> <!-- 增加行间距 -->
+
+  <!-- 空状态 -->
+  <view wx:if="{{skills.length === 0}}" class="empty-state">
+    <view class="empty-icon">📝</view>
+    <p class="empty-text">暂无技能</p>
+    <button type="primary" bindtap="navigateToAddSkill" style="margin-top: 20rpx; background-color: var(--accent-color); color: white;">添加技能</button>
   </view>
+
+  <block wx:else>
+    <!-- 主要表单卡片 -->
+    <view class="form-card">
+      <!-- 技能选择区域 -->
+      <view class="form-section">
+        <label class="section-label">选择技能</label>
+        <view class="skill-selection">
+          <!-- 常用技能快速选择 -->
+          <view class="recent-skills" wx:if="{{recentSkills.length > 0}}">
+            <scroll-view scroll-x="true" enable-flex class="skills-scroll">
+              <view wx:for="{{recentSkills}}" wx:key="id" class="skill-chip {{selectedSkillId === item.id ? 'selected' : ''}}" bindtap="selectSkillQuickly" data-skill-id="{{item.id}}" data-skill-index="{{item.index}}">
+                <text>{{item.name}}</text>
+              </view>
+            </scroll-view>
+          </view>
+          
+          <!-- 完整技能选择器 -->
+          <picker bindchange="onSkillSelect" value="{{selectedSkillIndex}}" range="{{skills}}" range-key="name" style="width: 100%;" picker-class="large-picker">
+            <view class="skill-picker">
+              <text class="picker-text">{{selectedSkillName}}</text>
+              <text class="arrow-icon">▼</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+
+      <!-- 时间选择区域 - 滑动选择器样式 -->
+      <view class="form-section">
+        <label class="section-label">练习时间</label>
+        <view class="time-selection">
+          <!-- 时间选择卡片 -->
+          <view class="time-picker-card">
+            <view class="time-display">
+              <text class="time-hours">{{selectedHours}}</text>
+              <text class="time-separator">:</text>
+              <text class="time-minutes">{{selectedMinutes < 10 ? '0' + selectedMinutes : selectedMinutes}}</text>
+            </view>
+            
+            <!-- 时间滑块 -->
+            <view class="time-slider-container">
+              <slider min="0" max="12" step="1" value="{{selectedHours}}" activeColor="var(--accent-color)" backgroundColor="var(--progress-bg)" block-size="36rpx" block-color="var(--accent-color)" bindchange="onHoursSliderChange" />
+              <view class="slider-labels">
+                <text>0小时</text>
+                <text>12小时</text>
+              </view>
+            </view>
+            
+            <!-- 分钟选择 -->
+            <view class="minutes-options">
+              <view class="minute-option {{selectedMinutes === 0 ? 'selected' : ''}}" bindtap="selectMinutes" data-minutes="0">0分</view>
+              <view class="minute-option {{selectedMinutes === 15 ? 'selected' : ''}}" bindtap="selectMinutes" data-minutes="15">15分</view>
+              <view class="minute-option {{selectedMinutes === 30 ? 'selected' : ''}}" bindtap="selectMinutes" data-minutes="30">30分</view>
+              <view class="minute-option {{selectedMinutes === 45 ? 'selected' : ''}}" bindtap="selectMinutes" data-minutes="45">45分</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 练习笔记区域 -->
+      <view class="form-section">
+        <label class="section-label">练习笔记 (可选)</label>
+        <textarea placeholder="记录今天的练习感受和收获..." placeholder-style="color: var(--text-tertiary);" value="{{practiceNotes}}" bindinput="onNotesInput" class="notes-input" maxlength="200" auto-height show-confirm-bar="false"></textarea>
+      </view>
+
+      <!-- 操作按钮 -->
+      <button type="default" bindtap="handleSubmit" class="submit-btn" hover-class="button-hover">
+        记录练习
+      </button>
+    </view>
+
+    <!-- 最近练习记录 -->
+    <view class="recent-activities" wx:if="{{recentActivities.length > 0}}">
+      <h3 class="section-title">最近记录</h3>
+      <view class="activities-list">
+        <view wx:for="{{recentActivities}}" wx:key="index" class="activity-item">
+          <view class="activity-info">
+            <text class="activity-skill">{{item.skillName}}</text>
+            <text class="activity-time">{{item.hours}}小时{{item.minutes}}分钟</text>
+          </view>
+          <text class="activity-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tip-container">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">{{motivationalTip}}</text>
+    </view>
+  </block>
 </view>

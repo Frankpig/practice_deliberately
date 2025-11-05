@@ -1,81 +1,476 @@
-/* index.wxss */
+/* 首页 - 重新设计样式 */
 
-/* 容器样式 */
+/* 全局样式重置和基础设置 */
 .container {
   padding: 30rpx;
+  padding-top: 50rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
 }
 
-/* 头部样式 */
+/* 顶部区域 - 主题切换 */
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20rpx 0;
+  justify-content: flex-end;
   margin-bottom: 40rpx;
 }
 
-.title {
-  font-size: 44rpx;
-  font-weight: bold;
-}
-
-/* 主题切换按钮 */
-.theme-toggle {
-  font-size: 26rpx;
-  padding: 10rpx 20rpx;
-  border: 1rpx solid #ddd;
-  border-radius: 20rpx;
+.theme-toggle-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
   background-color: var(--card-background-color);
-  color: var(--text-color);
-}
-
-/* 介绍文本样式 */
-.intro {
-  text-align: center;
-  margin-bottom: 60rpx;
-  padding: 0 40rpx;
-}
-
-/* 快捷操作按钮 */
-.quick-actions {
   display: flex;
-  flex-direction: column;
-  gap: 30rpx;
-}
-
-.action-button {
-  background-color: var(--card-background-color);
-  padding: 30rpx;
-  border-radius: 15rpx;
+  align-items: center;
+  justify-content: center;
   box-shadow: var(--card-shadow);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.action-button:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+.theme-toggle-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(163, 177, 138, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
 }
 
-/* 深色模式下的按钮悬停效果 */
-page.dark-mode .action-button:active {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+.theme-toggle-btn:active::before {
+  width: 200rpx;
+  height: 200rpx;
 }
 
-/* 按钮内文本样式 */
-.action-button text:first-child {
-  font-size: 32rpx;
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-icon {
+  font-size: 40rpx;
+}
+
+/* 英雄区域 */
+.hero-section {
+  margin-bottom: 60rpx;
+}
+
+.hero-content {
+  text-align: center;
+  margin-bottom: 40rpx;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.greeting {
+  font-size: 36rpx;
+  color: var(--secondary-text-color);
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.hero-title {
+  font-size: 64rpx;
+  font-weight: bold;
   color: var(--text-color);
-  font-weight: 500;
+  margin: 0;
+  margin-bottom: 20rpx;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
 }
 
-.action-button text:last-child {
+.hero-subtitle {
+  font-size: 32rpx;
+  color: var(--secondary-text-color);
+  margin: 0;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+/* 统计概览卡片 */
+.stats-overview {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+  animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+.stat-card {
+  flex: 1;
+  background-color: var(--card-background-color);
+  border-radius: 20rpx;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6rpx;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+}
+
+.stat-card:active {
+  transform: translateY(5rpx);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: var(--text-color);
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
   font-size: 26rpx;
   color: var(--secondary-text-color);
 }
 
-/* 按钮中的布局容器 */
-.action-button view {
+/* 今日目标 */
+.daily-goal {
+  background-color: var(--card-background-color);
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 50rpx;
+  box-shadow: var(--card-shadow);
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: var(--text-color);
+  margin: 0 0 25rpx 0;
+  position: relative;
+  padding-bottom: 10rpx;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80rpx;
+  height: 6rpx;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  border-radius: 3rpx;
+}
+
+.goal-progress {
+  margin-top: 20rpx;
+}
+
+.goal-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.goal-label {
+  font-size: 28rpx;
+  color: var(--secondary-text-color);
+}
+
+.goal-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.goal-bar-container {
+  width: 100%;
+  height: 20rpx;
+  background-color: var(--progress-bar-background);
+  border-radius: 10rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.goal-bar {
+  height: 100%;
+  background: var(--progress-bar-gradient);
+  border-radius: 10rpx;
+  transition: width 1s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.goal-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 2s infinite;
+}
+
+/* 快速操作 */
+.quick-actions {
+  margin-bottom: 50rpx;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25rpx;
+}
+
+.action-card {
+  background-color: var(--card-background-color);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-card:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.action-card:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+.action-card:nth-child(4) {
+  animation-delay: 1s;
+}
+
+.action-card:active {
+  transform: translateY(8rpx);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6rpx;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.action-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: rgba(163, 177, 138, 0.15);
+  margin: 0 auto 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 图标伪元素实现 */
+.add-icon::before {
+  content: '+';
+  font-size: 60rpx;
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+.record-icon::before {
+  content: '⏱️';
+  font-size: 50rpx;
+}
+
+.skills-icon::before {
+  content: '📊';
+  font-size: 50rpx;
+}
+
+.stats-icon::before {
+  content: '📈';
+  font-size: 50rpx;
+}
+
+.action-card h3 {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 10rpx 0;
+}
+
+.action-card p {
+  font-size: 24rpx;
+  color: var(--secondary-text-color);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 最近活动 */
+.recent-activities {
+  margin-bottom: 50rpx;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--card-background-color);
+  border-radius: 16rpx;
+  padding: 25rpx;
+  box-shadow: var(--card-shadow);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.activity-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: rgba(163, 177, 138, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  font-size: 32rpx;
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-text {
+  font-size: 28rpx;
+  color: var(--text-color);
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.activity-time {
+  font-size: 24rpx;
+  color: var(--secondary-text-color);
+}
+
+/* 激励语录 */
+.motivational-quote {
+  background-color: var(--card-background-color);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out 1.2s both;
+}
+
+.motivational-quote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150rpx;
+  height: 150rpx;
+  background: radial-gradient(circle, rgba(163, 177, 138, 0.15), transparent);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+}
+
+.quote-icon {
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+
+.quote-text {
+  font-size: 28rpx;
+  color: var(--secondary-text-color);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+  font-style: italic;
+}
+
+/* 动画定义 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* 深色模式特定样式调整 */
+page.dark-mode .stat-card::before,
+page.dark-mode .action-card::before {
+  opacity: 0.8;
+}
+
+page.dark-mode .action-icon,
+page.dark-mode .activity-icon {
+  background-color: rgba(163, 177, 138, 0.1);
+}
+
+/* 响应式调整 */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }

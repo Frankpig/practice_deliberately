@@ -5,6 +5,7 @@ Page({
   data: {
     skills: [],
     darkMode: false,
+    lastUpdateTime: '',
     // 默认的模拟技能数据，防止图表显示为空
     defaultSkills: [
       {
@@ -98,12 +99,25 @@ Page({
     this.setData({ renderTrigger: Math.random() });
   },
   
+  // 格式化时间显示
+  formatUpdateTime: function() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  },
+  
   // 准备图表数据
   prepareChartData: function() {
     const { skills, darkMode, defaultSkills } = this.data;
     const app = getApp();
     
     console.log('开始准备图表数据，技能数量:', skills.length);
+    
+    // 更新最后更新时间
+    this.setData({
+      lastUpdateTime: this.formatUpdateTime()
+    });
     
     // 如果没有技能数据，使用默认模拟数据
     let skillsToUse = skills;
@@ -210,6 +224,31 @@ Page({
   // 处理饼图点击事件
   onChartTap: function(e) {
     console.log('饼图被点击', e);
-    // 确保chartUtils.js中的触摸事件处理逻辑能够捕获到点击位置
+    // 添加点击反馈
+    wx.showToast({
+      title: '点击了饼图',
+      icon: 'none',
+      duration: 1500
+    });
+  },
+  
+  // 处理饼图长按事件
+  onChartLongPress: function(e) {
+    console.log('饼图被长按', e);
+    wx.showToast({
+      title: '长按查看详情',
+      icon: 'none',
+      duration: 1500
+    });
+  },
+  
+  // 处理柱状图点击事件
+  onBarChartTap: function(e) {
+    console.log('柱状图被点击', e);
+    wx.showToast({
+      title: '点击了柱状图',
+      icon: 'none',
+      duration: 1500
+    });
   }
 });

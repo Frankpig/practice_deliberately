@@ -1,50 +1,100 @@
-<!-- index.wxml -->
-<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh;">
-  <!-- 顶部标题和主题切换 -->
-  <view class="header" style="display: block; padding: 20rpx 0; margin-bottom: 40rpx; text-align: center;">
-    <view class="title" style="display: block; font-size: 44rpx; font-weight: bold; color: var(--text-color); margin-bottom: 20rpx; text-align: center;">
-      {{welcomeMessage}}
+<!-- 首页 - 重新设计 -->
+<view class="container {{darkModeClass}}" style="background-color: var(--background-color); min-height: 100vh; transition: background-color 0.3s ease;">
+  <!-- 顶部区域 -->
+  <view class="header">
+    <view class="theme-toggle-btn" bindtap="toggleDarkMode">
+      <text class="theme-icon">{{darkMode ? '☀️' : '🌙'}}</text>
     </view>
-    <button class="theme-toggle" bindtap="toggleDarkMode" hover-class="button-hover" style="display: inline-block; color: #333; background-color: white; padding: 10rpx 20rpx; margin: 0 auto; border-radius: 20rpx;">
-      {{darkMode ? '浅色模式' : '深色模式'}}
-    </button>
   </view>
   
-  <!-- 介绍文本 -->
-  <view class="intro" style="text-align: center; margin-bottom: 60rpx; padding: 0 40rpx;">
-    <text style="font-size: 32rpx; color: var(--secondary-text-color); line-height: 1.6;">
-      {{introText}}
-    </text>
+  <!-- 英雄区域 -->
+  <view class="hero-section">
+    <view class="hero-content">
+      <text class="greeting">{{greeting}}</text>
+      <h1 class="hero-title">刻意练习</h1>
+      <p class="hero-subtitle">记录10,000小时，见证你的成长</p>
+    </view>
+    
+    <!-- 统计概览卡片 -->
+    <view class="stats-overview" wx:if="hasSkills">
+      <view class="stat-card">
+        <text class="stat-value">{{totalSkills}}</text>
+        <text class="stat-label">已学习技能</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value">{{totalHours}}</text>
+        <text class="stat-label">总练习小时</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value">{{streakDays}}</text>
+        <text class="stat-label">连续练习天数</text>
+      </view>
+    </view>
   </view>
   
-  <!-- 功能快捷入口 -->
-  <view class="quick-actions" style="display: flex; flex-direction: column; gap: 30rpx;">
-    <view class="action-button" bindtap="navigateToAddSkill" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
-      <view style="display: flex; justify-content: space-between; align-items: center;">
-        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">添加新技能</text>
-        <text style="font-size: 26rpx; color: var(--secondary-text-color);">开始你的练习之旅</text>
+  <!-- 今日目标 -->
+  <view class="daily-goal" wx:if="hasSkills">
+    <h2 class="section-title">今日目标</h2>
+    <view class="goal-progress">
+      <view class="goal-info">
+        <text class="goal-label">今日已练习</text>
+        <text class="goal-value">{{todayHours}} / {{dailyGoal}} 小时</text>
+      </view>
+      <view class="goal-bar-container">
+        <view class="goal-bar" style="width: {{goalProgressPercentage}}%;"></view>
       </view>
     </view>
-    
-    <view class="action-button" bindtap="navigateToRecordPractice" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
-      <view style="display: flex; justify-content: space-between; align-items: center;">
-        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">记录练习时间</text>
-        <text style="font-size: 26rpx; color: var(--secondary-text-color);">跟踪你的努力</text>
+  </view>
+  
+  <!-- 快速操作 -->
+  <view class="quick-actions">
+    <h2 class="section-title">快速操作</h2>
+    <view class="action-grid">
+      <view class="action-card" bindtap="navigateToAddSkill">
+        <div class="action-icon add-icon"></div>
+        <h3>添加新技能</h3>
+        <p>开始你的练习之旅</p>
+      </view>
+      
+      <view class="action-card" bindtap="navigateToRecordPractice">
+        <div class="action-icon record-icon"></div>
+        <h3>记录练习时间</h3>
+        <p>跟踪你的每一刻努力</p>
+      </view>
+      
+      <view class="action-card" bindtap="navigateToSkillList">
+        <div class="action-icon skills-icon"></div>
+        <h3>我的技能</h3>
+        <p>查看所有技能进度</p>
+      </view>
+      
+      <view class="action-card" bindtap="navigateToStatistics">
+        <div class="action-icon stats-icon"></div>
+        <h3>数据统计</h3>
+        <p>可视化你的成长历程</p>
       </view>
     </view>
-    
-    <view class="action-button" bindtap="navigateToSkillList" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
-      <view style="display: flex; justify-content: space-between; align-items: center;">
-        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">查看我的技能</text>
-        <text style="font-size: 26rpx; color: var(--secondary-text-color);">了解进度情况</text>
-      </view>
+  </view>
+  
+  <!-- 最近活动 -->
+  <view class="recent-activities" wx:if="recentActivities.length > 0">
+    <h2 class="section-title">最近活动</h2>
+    <view class="activities-list">
+      <block wx:for="{{recentActivities}}" wx:key="index">
+        <view class="activity-item">
+          <div class="activity-icon">{{item.icon}}</div>
+          <div class="activity-info">
+            <text class="activity-text">{{item.text}}</text>
+            <text class="activity-time">{{item.time}}</text>
+          </div>
+        </view>
+      </block>
     </view>
-    
-    <view class="action-button" bindtap="navigateToSkillProgress" style="background-color: var(--card-background-color); padding: 30rpx; border-radius: 15rpx; box-shadow: var(--card-shadow);">
-      <view style="display: flex; justify-content: space-between; align-items: center;">
-        <text style="font-size: 32rpx; color: var(--text-color); font-weight: 500;">进度统计</text>
-        <text style="font-size: 26rpx; color: var(--secondary-text-color);">可视化你的成长</text>
-      </view>
-    </view>
+  </view>
+  
+  <!-- 激励语录 -->
+  <view class="motivational-quote">
+    <text class="quote-icon">💡</text>
+    <p class="quote-text">{{motivationalQuote}}</p>
   </view>
 </view>
